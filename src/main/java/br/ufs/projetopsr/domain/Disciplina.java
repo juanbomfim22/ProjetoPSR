@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Disciplina implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -23,6 +25,7 @@ public class Disciplina implements Serializable {
 	private String codigo;
 	private Integer creditos;
 	
+	@JsonManagedReference
 	@ManyToMany(mappedBy="disciplinas")
 	private List<Curso> cursos = new ArrayList<>();
 	

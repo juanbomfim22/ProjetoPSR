@@ -35,7 +35,7 @@ public class ProjetoPsrBackendApplication implements CommandLineRunner {
 		Disciplina d2 = new Disciplina(null, "Eng Software", "ES", 8);
 		Disciplina d3 = new Disciplina(null, "Programacao Paralela", "PP", 4); 
 		
-		// Deve repetir e usar o flush, se nao dá erro Transactional ...
+		// Deve repetir o saveAll e usar o flush, se nao dá erro Transactional ...
 		cursoRepository.saveAll(Arrays.asList(c1));
 		disciplinaRepository.saveAll(Arrays.asList(d1, d2, d3));
 		cursoRepository.flush();

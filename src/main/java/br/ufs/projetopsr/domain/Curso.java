@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Curso implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -26,6 +28,7 @@ public class Curso implements Serializable {
 	private Integer periodo;
 	private String instituicaoDeEnsino;
 	
+	@JsonBackReference
 	@ManyToMany
 	@JoinTable(name= "CURSO_DISCIPLINA",
 		joinColumns = @JoinColumn(name= "curso_id"),
