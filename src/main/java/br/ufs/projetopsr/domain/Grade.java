@@ -2,6 +2,7 @@ package br.ufs.projetopsr.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,43 +10,49 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import br.ufs.projetopsr.domain.enums.Turno;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class Docente implements Serializable {
+public class Grade implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
+	
 	private String nome;
-	private Turno turno;
+	private Date horaCriacao;
 	
-	@JsonBackReference
-	@OneToMany(mappedBy="docente")
-	private List<Restricao> restricoes = new ArrayList<>();
+	@ManyToOne
+	@JoinColumn(name="usuario_id")
+	private Usuario usuario;
 	
-	@ManyToMany(mappedBy="docentes")
-	private List<Grade> grades = new ArrayList<>();
-
-	@OneToMany(mappedBy="docente")
+	@ManyToMany
+	@JoinTable(name= "GRADE_DOCENTE",
+	joinColumns = @JoinColumn(name= "grade_id"),
+	inverseJoinColumns = @JoinColumn(name= "docente_id"))
+	private List<Docente> docentes = new ArrayList<>();
+	
+	@ManyToMany
+	@JoinTable(name= "GRADE_DISCIPLINA",
+	joinColumns = @JoinColumn(name= "grade_id"),
+	inverseJoinColumns = @JoinColumn(name= "disciplina_id"))
 	private List<Disciplina> disciplinas = new ArrayList<>();
+		
 	
-	public Docente() {
+	public Grade() {
 	}
 
-	public Docente(Integer id, String nome, Turno turno) {
+	public Grade(Integer id, String nome, Date horaCriacao) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.turno = turno;
+		this.setHoraCriacao(horaCriacao);
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -61,31 +68,23 @@ public class Docente implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
-	public Turno getTurno() {
-		return turno;
-	}
-
-	public void setTurno(Turno turno) {
-		this.turno = turno;
-	}
-
-	public List<Restricao> getRestricoes() {
-		return restricoes;
-	}
-
-	public void setRestricoes(List<Restricao> restricoes) {
-		this.restricoes = restricoes;
-	}
 	
-	public List<Grade> getGrades() {
-		return grades;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setGrades(List<Grade> grades) {
-		this.grades = grades;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
-	
+
+	public List<Docente> getDocentes() {
+		return docentes;
+	}
+
+	public void setDocentes(List<Docente> docentes) {
+		this.docentes = docentes;
+	}
+
 	public List<Disciplina> getDisciplinas() {
 		return disciplinas;
 	}
@@ -93,6 +92,15 @@ public class Docente implements Serializable {
 	public void setDisciplinas(List<Disciplina> disciplinas) {
 		this.disciplinas = disciplinas;
 	}
+	
+	public Date getHoraCriacao() {
+		return horaCriacao;
+	}
+
+	public void setHoraCriacao(Date horaCriacao) {
+		this.horaCriacao = horaCriacao;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -106,7 +114,7 @@ public class Docente implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Docente other = (Docente) obj;
+		Grade other = (Grade) obj;
 		return Objects.equals(id, other.id);
 	}
 }

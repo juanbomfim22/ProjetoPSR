@@ -9,43 +9,32 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import br.ufs.projetopsr.domain.enums.Turno;
-
 @Entity
-public class Docente implements Serializable {
+public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
+	
 	private String nome;
-	private Turno turno;
+	private String email;
 	
-	@JsonBackReference
-	@OneToMany(mappedBy="docente")
-	private List<Restricao> restricoes = new ArrayList<>();
-	
-	@ManyToMany(mappedBy="docentes")
+	@OneToMany(mappedBy="usuario")
 	private List<Grade> grades = new ArrayList<>();
 
-	@OneToMany(mappedBy="docente")
-	private List<Disciplina> disciplinas = new ArrayList<>();
-	
-	public Docente() {
+	public Usuario() {	
 	}
 
-	public Docente(Integer id, String nome, Turno turno) {
+	public Usuario(Integer id, String nome, String email) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.turno = turno;
+		this.email = email;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -62,20 +51,12 @@ public class Docente implements Serializable {
 		this.nome = nome;
 	}
 
-	public Turno getTurno() {
-		return turno;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setTurno(Turno turno) {
-		this.turno = turno;
-	}
-
-	public List<Restricao> getRestricoes() {
-		return restricoes;
-	}
-
-	public void setRestricoes(List<Restricao> restricoes) {
-		this.restricoes = restricoes;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	public List<Grade> getGrades() {
@@ -85,14 +66,7 @@ public class Docente implements Serializable {
 	public void setGrades(List<Grade> grades) {
 		this.grades = grades;
 	}
-	
-	public List<Disciplina> getDisciplinas() {
-		return disciplinas;
-	}
 
-	public void setDisciplinas(List<Disciplina> disciplinas) {
-		this.disciplinas = disciplinas;
-	}
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -106,7 +80,8 @@ public class Docente implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Docente other = (Docente) obj;
+		Usuario other = (Usuario) obj;
 		return Objects.equals(id, other.id);
 	}
+
 }

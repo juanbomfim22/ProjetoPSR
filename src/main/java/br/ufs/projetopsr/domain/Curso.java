@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import br.ufs.projetopsr.domain.enums.CursoSigla;
+
 @Entity
 public class Curso implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -24,7 +26,7 @@ public class Curso implements Serializable {
 	private Integer id;
 	
 	private String nome;
-	private String sigla;
+	private Integer sigla;
 	private Integer periodo;
 	private String instituicaoDeEnsino;
 	
@@ -32,15 +34,14 @@ public class Curso implements Serializable {
 	@ManyToMany
 	@JoinTable(name= "CURSO_DISCIPLINA",
 		joinColumns = @JoinColumn(name= "curso_id"),
-		inverseJoinColumns = @JoinColumn(name= "disciplina_id")
-	)
+		inverseJoinColumns = @JoinColumn(name= "disciplina_id"))
 	private List<Disciplina> disciplinas = new ArrayList<>();
 	
-	public Curso(Integer id, String nome, String sigla, Integer periodo, String instituicaoDeEnsino) {
+	public Curso(Integer id, String nome, CursoSigla sigla, Integer periodo, String instituicaoDeEnsino) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.sigla = sigla;
+		this.sigla = sigla.getId();
 		this.periodo = periodo;
 		this.instituicaoDeEnsino = instituicaoDeEnsino;
 	}
@@ -65,12 +66,12 @@ public class Curso implements Serializable {
 		this.nome = nome;
 	}
 
-	public String getSigla() {
-		return sigla;
+	public CursoSigla getSigla() {
+		return CursoSigla.toEnum(sigla);
 	}
 
-	public void setSigla(String sigla) {
-		this.sigla = sigla;
+	public void setSigla(CursoSigla sigla) {
+		this.sigla = sigla.getId();
 	}
 
 	public Integer getPeriodo() {

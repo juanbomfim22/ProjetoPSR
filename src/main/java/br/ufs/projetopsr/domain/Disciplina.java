@@ -9,7 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -25,10 +27,17 @@ public class Disciplina implements Serializable {
 	private String codigo;
 	private Integer creditos;
 	
+	@ManyToOne
+	@JoinColumn(name="docente_id")
+	private Docente docente;
+	
 	@JsonManagedReference
 	@ManyToMany(mappedBy="disciplinas")
 	private List<Curso> cursos = new ArrayList<>();
 	
+	@ManyToMany(mappedBy="disciplinas")
+	private List<Grade> grades = new ArrayList<>();
+
 	public String getNome() {
 		return nome;
 	}
@@ -54,17 +63,31 @@ public class Disciplina implements Serializable {
 		this.cursos = cursos;
 	}
 	
-	public Disciplina(Integer id, String nome, String codigo, Integer creditos) {
+	public List<Grade> getGrades() {
+		return grades;
+	}
+	public void setGrades(List<Grade> grades) {
+		this.grades = grades;
+	}
+	
+	public Docente getDocente() {
+		return docente;
+	}
+	public void setDocente(Docente docente) {
+		this.docente = docente;
+	}
+	public Disciplina() {
+		
+	}
+	
+	public Disciplina(Integer id, String nome, String codigo, Integer creditos, Docente docente) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.codigo = codigo;
 		this.creditos = creditos;
-	}
-	
-	public Disciplina() {
-		
-	}
+		this.docente = docente;
+	}	
 	
 	@Override
 	public int hashCode() {

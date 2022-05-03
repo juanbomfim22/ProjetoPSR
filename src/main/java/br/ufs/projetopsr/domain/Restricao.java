@@ -7,13 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import br.ufs.projetopsr.domain.enums.DiaDaSemana;
 
 @Entity
-public class Restricao implements Serializable {
+@Inheritance(strategy=InheritanceType.JOINED)
+public abstract class Restricao implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
