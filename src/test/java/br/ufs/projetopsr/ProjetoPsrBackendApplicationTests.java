@@ -1,4 +1,4 @@
-package com.juanbomfim.projetopsr;
+package br.ufs.projetopsr;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;

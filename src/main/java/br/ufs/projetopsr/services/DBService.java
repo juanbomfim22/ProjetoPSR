@@ -1,13 +1,12 @@
-package br.ufs.projetopsr;
+package br.ufs.projetopsr.services;
 
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import br.ufs.projetopsr.domain.Curso;
 import br.ufs.projetopsr.domain.Disciplina;
@@ -27,8 +26,8 @@ import br.ufs.projetopsr.repositories.GradeRepository;
 import br.ufs.projetopsr.repositories.RestricaoRepository;
 import br.ufs.projetopsr.repositories.UsuarioRepository;
 
-@SpringBootApplication
-public class ProjetoPsrBackendApplication implements CommandLineRunner {
+@Service
+public class DBService {
 	@Autowired
 	private BCryptPasswordEncoder be;
 	
@@ -50,15 +49,7 @@ public class ProjetoPsrBackendApplication implements CommandLineRunner {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
-	//@Autowired
-	
-	
-	public static void main(String[] args) {
-		SpringApplication.run(ProjetoPsrBackendApplication.class, args);
-	}
-
-	@Override
-	public void run(String... args) throws Exception {
+	public void instantiateTestDatabase() throws ParseException {
 		// TODO Auto-generated method stub
 		
 		Curso c1 = new Curso(null,"Engenharia de Computacao", CursoSigla.EC, 6, "UFS");
@@ -121,5 +112,4 @@ public class ProjetoPsrBackendApplication implements CommandLineRunner {
 		gradeRepository.saveAll(Arrays.asList(g1));
 		usuarioRepository.saveAll(Arrays.asList(u1));
 	}
-
 }
