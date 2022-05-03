@@ -1,6 +1,5 @@
 package br.ufs.projetopsr;
 
-import java.time.DayOfWeek;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import br.ufs.projetopsr.domain.Curso;
 import br.ufs.projetopsr.domain.Disciplina;
 import br.ufs.projetopsr.domain.Docente;
 import br.ufs.projetopsr.domain.Restricao;
+import br.ufs.projetopsr.domain.enums.DiaDaSemana;
 import br.ufs.projetopsr.domain.enums.Turno;
 import br.ufs.projetopsr.repositories.CursoRepository;
 import br.ufs.projetopsr.repositories.DisciplinaRepository;
@@ -66,9 +66,9 @@ public class ProjetoPsrBackendApplication implements CommandLineRunner {
 		Docente doc1 = new Docente(null, "Carlos Alberto", Turno.toEnum(2));
 		Docente doc2 = new Docente(null, "Leonardo", Turno.toEnum(3));
 		
-		Restricao r1a = new Restricao(null, "Não pode dar aula de noite",DayOfWeek.MONDAY, doc1);
-		Restricao r1b = new Restricao(null, "Não pode dar aula de noite",DayOfWeek.FRIDAY, doc1);
-		Restricao r2 = new Restricao(null, "Não pode dar aula de manhã",DayOfWeek.TUESDAY, doc2);
+		Restricao r1a = new Restricao(null, "Não pode dar aula de noite",DiaDaSemana.SEGUNDA, doc1);
+		Restricao r1b = new Restricao(null, "Não pode dar aula de noite",DiaDaSemana.TERCA, doc1);
+		Restricao r2 = new Restricao(null, "Não pode dar aula de manhã",DiaDaSemana.QUARTA, doc2);
 
 		doc1.getRestricoes().addAll(Arrays.asList(r1a, r1b));
 		doc2.getRestricoes().addAll(Arrays.asList(r2));

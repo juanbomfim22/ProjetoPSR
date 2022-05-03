@@ -1,7 +1,6 @@
 package br.ufs.projetopsr.domain;
 
 import java.io.Serializable;
-import java.time.DayOfWeek;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -11,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import br.ufs.projetopsr.domain.enums.DiaDaSemana;
+
 @Entity
 public class Restricao implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -19,7 +20,7 @@ public class Restricao implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	private DayOfWeek diaDaSemana;
+	private Integer diaDaSemana;
 	
 	@ManyToOne
 	@JoinColumn(name="docente_id")
@@ -28,11 +29,11 @@ public class Restricao implements Serializable {
 	public Restricao() {	
 	}
 
-	public Restricao(Integer id, String nome, DayOfWeek diaDaSemana, Docente docente) {
+	public Restricao(Integer id, String nome, DiaDaSemana diaDaSemana, Docente docente) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.diaDaSemana = diaDaSemana;
+		this.diaDaSemana = diaDaSemana.getId();
 		this.setDocente(docente);
 	}
 
@@ -52,12 +53,12 @@ public class Restricao implements Serializable {
 		this.nome = nome;
 	}
 
-	public DayOfWeek getDiaDaSemana() {
-		return diaDaSemana;
+	public DiaDaSemana getDiaDaSemana() {
+		return DiaDaSemana.toEnum(diaDaSemana);
 	}
 
-	public void setDiaDaSemana(DayOfWeek diaDaSemana) {
-		this.diaDaSemana = diaDaSemana;
+	public void setDiaDaSemana(DiaDaSemana diaDaSemana) {
+		this.diaDaSemana = diaDaSemana.getId();
 	}
 	
 	public Docente getDocente() {

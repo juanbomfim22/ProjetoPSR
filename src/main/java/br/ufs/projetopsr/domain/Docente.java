@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import br.ufs.projetopsr.domain.enums.Turno;
 
 @Entity
@@ -23,6 +25,7 @@ public class Docente implements Serializable {
 	private String nome;
 	private Turno turno;
 	
+	@JsonBackReference
 	@OneToMany(mappedBy="docente")
 	private List<Restricao> restricoes = new ArrayList<>();
 	
