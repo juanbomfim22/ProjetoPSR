@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Usuario implements Serializable {
@@ -24,7 +24,7 @@ public class Usuario implements Serializable {
 	private String nome;
 	private String email;
 	
-	@JsonManagedReference
+	@JsonIgnore
 	@OneToMany(mappedBy="usuario")
 	private List<Grade> grades = new ArrayList<>();
 
