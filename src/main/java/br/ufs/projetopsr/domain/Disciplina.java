@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -27,6 +28,7 @@ public class Disciplina implements Serializable {
 	private String codigo;
 	private Integer creditos;
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="docente_id")
 	private Docente docente;
@@ -35,6 +37,7 @@ public class Disciplina implements Serializable {
 	@ManyToMany(mappedBy="disciplinas")
 	private List<Curso> cursos = new ArrayList<>();
 	
+	@JsonBackReference
 	@ManyToMany(mappedBy="disciplinas")
 	private List<Grade> grades = new ArrayList<>();
 
@@ -56,6 +59,7 @@ public class Disciplina implements Serializable {
 	public void setCreditos(Integer creditos) {
 		this.creditos = creditos;
 	}
+	 
 	public List<Curso> getCursos() {
 		return cursos;
 	}

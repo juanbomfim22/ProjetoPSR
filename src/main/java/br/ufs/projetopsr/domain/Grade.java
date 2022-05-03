@@ -15,6 +15,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Grade implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -24,18 +28,23 @@ public class Grade implements Serializable {
 	private Integer id;
 	
 	private String nome;
+	
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
 	private Date horaCriacao;
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="usuario_id")
 	private Usuario usuario;
 	
+	@JsonManagedReference
 	@ManyToMany
 	@JoinTable(name= "GRADE_DOCENTE",
 	joinColumns = @JoinColumn(name= "grade_id"),
 	inverseJoinColumns = @JoinColumn(name= "docente_id"))
 	private List<Docente> docentes = new ArrayList<>();
 	
+	@JsonBackReference
 	@ManyToMany
 	@JoinTable(name= "GRADE_DISCIPLINA",
 	joinColumns = @JoinColumn(name= "grade_id"),

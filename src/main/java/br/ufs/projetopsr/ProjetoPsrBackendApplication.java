@@ -60,15 +60,27 @@ public class ProjetoPsrBackendApplication implements CommandLineRunner {
 		
 		Curso c1 = new Curso(null,"Engenharia de Computacao", CursoSigla.EC, 6, "UFS");
 		
-		Disciplina d1 = new Disciplina(null, "Inteligencia Artificial", "IA", 4, null);
-		Disciplina d2 = new Disciplina(null, "Eng Software", "ES", 8, null);
-		Disciplina d3 = new Disciplina(null, "Programacao Paralela", "PP", 4, null); 
+		Docente doc1 = new Docente(null, "Carlos Alberto", Turno.toEnum(2));
+		Docente doc2 = new Docente(null, "Leonardo", Turno.toEnum(3));
 		
+		Disciplina d1 = new Disciplina(null, "Inteligencia Artificial", "IA", 4, doc1);
+		Disciplina d2 = new Disciplina(null, "Eng Software", "ES", 8, doc2);
+		Disciplina d3 = new Disciplina(null, "Programacao Paralela", "PP", 4, doc2); 
+		
+		Restricao r1a = new RestricaoIndisponibilidade(null, "Restr 1",DiaDaSemana.SEGUNDA, doc1, "Não pode dar aula de noite");
+		Restricao r1b = new RestricaoPreferencia(null, "Terça pode", DiaDaSemana.TERCA, doc1, 5);
+		Restricao r2 = new RestricaoIndisponibilidade(null, "Restr 3", DiaDaSemana.QUARTA, doc2, "Não pode dar aula de manha");
+
 		// Deve repetir o saveAll e usar o flush, se nao dá erro Transactional ...
 		cursoRepository.saveAll(Arrays.asList(c1));
+		docenteRepository.saveAll(Arrays.asList(doc1, doc2));
 		disciplinaRepository.saveAll(Arrays.asList(d1, d2, d3));
+		restricaoRepository.saveAll(Arrays.asList(r1a, r1b, r2));
+		
 		cursoRepository.flush();
+		docenteRepository.flush();
 		disciplinaRepository.flush();
+		restricaoRepository.flush();
 		//
 		
 		c1.getDisciplinas().addAll(Arrays.asList(d1, d2, d3));
@@ -77,23 +89,16 @@ public class ProjetoPsrBackendApplication implements CommandLineRunner {
 		d2.getCursos().addAll(Arrays.asList(c1));
 		d3.getCursos().addAll(Arrays.asList(c1));
 
-		Docente doc1 = new Docente(null, "Carlos Alberto", Turno.toEnum(2));
-		Docente doc2 = new Docente(null, "Leonardo", Turno.toEnum(3));
-
+		
 		doc1.setDisciplinas(Arrays.asList(d1));
 		doc2.setDisciplinas(Arrays.asList(d2, d3));
-		
-		Restricao r1a = new RestricaoIndisponibilidade(null, "Restr 1",DiaDaSemana.SEGUNDA, doc1, "Não pode dar aula de noite");
-		Restricao r1b = new RestricaoPreferencia(null, "Terça pode", DiaDaSemana.TERCA, doc1, 5);
-		Restricao r2 = new RestricaoIndisponibilidade(null, "Restr 3", DiaDaSemana.QUARTA, doc2, "Não pode dar aula de manha");
-
+				
 		doc1.getRestricoes().addAll(Arrays.asList(r1a, r1b));
 		doc2.getRestricoes().addAll(Arrays.asList(r2));
 
 		cursoRepository.saveAll(Arrays.asList(c1));
-		disciplinaRepository.saveAll(Arrays.asList(d1, d2, d3));
-		
 		docenteRepository.saveAll(Arrays.asList(doc1, doc2));
+		disciplinaRepository.saveAll(Arrays.asList(d1, d2, d3));
 		restricaoRepository.saveAll(Arrays.asList(r1a, r1b, r2));
 		 
 		Usuario u1 = new Usuario(null, "juan", "juan@teste.com");

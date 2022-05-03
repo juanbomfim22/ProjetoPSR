@@ -13,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import br.ufs.projetopsr.domain.enums.Turno;
 
@@ -26,13 +27,15 @@ public class Docente implements Serializable {
 	private String nome;
 	private Turno turno;
 	
-	@JsonBackReference
+	@JsonManagedReference
 	@OneToMany(mappedBy="docente")
 	private List<Restricao> restricoes = new ArrayList<>();
 	
+	@JsonBackReference
 	@ManyToMany(mappedBy="docentes")
 	private List<Grade> grades = new ArrayList<>();
 
+	@JsonManagedReference
 	@OneToMany(mappedBy="docente")
 	private List<Disciplina> disciplinas = new ArrayList<>();
 	

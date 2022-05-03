@@ -12,11 +12,13 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import br.ufs.projetopsr.domain.enums.DiaDaSemana;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
-public abstract class Restricao implements Serializable {
+public class Restricao implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -25,6 +27,7 @@ public abstract class Restricao implements Serializable {
 	private String nome;
 	private Integer diaDaSemana;
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="docente_id")
 	private Docente docente;
