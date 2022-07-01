@@ -29,7 +29,7 @@ public class SpringFoxConfig {
 				.apis(RequestHandlerSelectors.basePackage("br.ufs.projetopsr.resources")).paths(PathSelectors.any())
 				
 				.build().apiInfo(apiInfo()).useDefaultResponseMessages(false).globalResponses(HttpMethod.GET,
-						List.of(new ResponseBuilder().code("200").description("200 message").build(),
+						Arrays.asList(new ResponseBuilder().code("200").description("200 message").build(),
 								new ResponseBuilder().code("403").description("403 message").build(),
 								new ResponseBuilder().code("500").description("500 message").build()))
 				  .securityContexts(Arrays.asList(securityContext()))
