@@ -20,4 +20,10 @@ public class GradeService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Grade.class.getName() ));
 	}
+	
+	public Grade inserir(Grade obj) {
+		obj.setId(null); 
+		obj = repo.save(obj);
+		return obj;
+	}
 }

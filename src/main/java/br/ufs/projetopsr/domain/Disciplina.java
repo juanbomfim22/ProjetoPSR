@@ -93,6 +93,12 @@ public class Disciplina implements Serializable {
 		this.docente = docente;
 	}	
 	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -108,5 +114,6 @@ public class Disciplina implements Serializable {
 		Disciplina other = (Disciplina) obj;
 		return Objects.equals(id, other.id);
 	}
+	
 		
 }

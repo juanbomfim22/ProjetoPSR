@@ -20,4 +20,10 @@ public class DocenteService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Docente.class.getName() ));
 	}
+	
+	public Docente inserir(Docente obj) {
+		obj.setId(null); 
+		obj = repo.save(obj);
+		return obj;
+	}
 }

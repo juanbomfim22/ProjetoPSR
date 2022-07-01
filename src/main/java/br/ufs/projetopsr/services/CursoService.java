@@ -20,4 +20,10 @@ public class CursoService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Curso.class.getName() ));
 	}
+	
+	public Curso inserir(Curso obj) {
+		obj.setId(null); 
+		obj = repo.save(obj);
+		return obj;
+	} 
 }

@@ -54,8 +54,11 @@ public class DBService {
 		
 		Curso c1 = new Curso(null,"Engenharia de Computacao", CursoSigla.EC, 6, "UFS");
 		
-		Docente doc1 = new Docente(null, "Carlos Alberto", Turno.toEnum(2));
-		Docente doc2 = new Docente(null, "Leonardo", Turno.toEnum(3));
+		Docente doc1 = new Docente(null, "Carlos", Turno.toEnum(2));
+		Docente doc2 = new Docente(null, "Tarcisio", Turno.toEnum(3));
+		Docente doc3 = new Docente(null, "Leila", Turno.toEnum(3));
+		Docente doc4 = new Docente(null, "Beatriz", Turno.toEnum(1));
+
 		
 		Disciplina d1 = new Disciplina(null, "Inteligencia Artificial", "IA", 4, doc1);
 		Disciplina d2 = new Disciplina(null, "Eng Software", "ES", 8, doc2);
@@ -67,7 +70,7 @@ public class DBService {
 
 		// Deve repetir o saveAll e usar o flush, se nao dá erro Transactional ...
 		cursoRepository.saveAll(Arrays.asList(c1));
-		docenteRepository.saveAll(Arrays.asList(doc1, doc2));
+		docenteRepository.saveAll(Arrays.asList(doc1, doc2, doc3, doc4));
 		disciplinaRepository.saveAll(Arrays.asList(d1, d2, d3));
 		restricaoRepository.saveAll(Arrays.asList(r1a, r1b, r2));
 		

@@ -4,7 +4,7 @@ import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.ufs.projetopsr.domain.Usuario;
+import br.ufs.projetopsr.dto.UsuarioDTO;
 import br.ufs.projetopsr.services.UsuarioService;
 
 @RestController
 @RequestMapping(value="/usuarios")
 public class UsuarioResource {
 	 
+	
 	@Autowired
 	private UsuarioService service;
 	
@@ -29,12 +31,14 @@ public class UsuarioResource {
 		return ResponseEntity.ok(obj);
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+//	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody Usuario obj){
-		obj = service.insert(obj);
+	public ResponseEntity<Void> inserir(@RequestBody @Validated UsuarioDTO obj){
+		Usuario user = service.fromDTO(obj);
+		user = service.inserir(user);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(obj.getId()).toUri();
+				.buildAndExpand(user.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
+	 
 }
