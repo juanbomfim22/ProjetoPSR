@@ -1,0 +1,66 @@
+package br.ufs.projetopsr.services;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import br.ufs.projetopsr.domain.Turno;
+import br.ufs.projetopsr.domain.Usuario;
+import br.ufs.projetopsr.dto.TurnoDTO;
+import br.ufs.projetopsr.repositories.GradeRepository;
+import br.ufs.projetopsr.repositories.TurnoRepository;
+import br.ufs.projetopsr.services.exceptions.ObjectNotFoundException;
+
+@Service
+public class TurnoService {
+
+	@Autowired
+	private TurnoRepository repo;
+
+	@Autowired
+	private GradeRepository gradeRepo;
+
+	public Turno buscar(Integer id) {
+		Optional<Turno> obj = repo.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Turno não encontrado! Id: " + id + ", Tipo: " + Usuario.class.getName()));
+	}
+
+	public Turno inserir(Turno obj) {
+		obj.setId(null);
+		obj = repo.save(obj);
+		return obj;
+	}
+
+	// UPDATE
+	public Turno fromDTO(TurnoDTO dto, Integer id) {
+		Turno tmp = buscar(id);
+//		Grade gr = gradeRepo.findById(dto.getGradeId())
+//				.orElseThrow(() -> new ObjectNotFoundException("Grade não encontrada! Id: " + dto.getGradeId()));
+
+//		Turno t = new Turno(null, dto.getNome(), dto.getHoraInicio(), dto.getHoraTermino(), tmp.getGrade());
+//		return t;
+		
+		return tmp;
+	}
+	
+	// INSERT
+	public Turno fromDTO(TurnoDTO dto) {
+		Turno t = new Turno(null, dto.getNome(), dto.getHoraInicio(), dto.getHoraTermino());
+//		Turno t = new Turno(null, dto.getNome(), dto.getHoraInicio(), dto.getHoraTermino(), tmp.getGrade());
+		return t;
+	}
+	
+	
+	public Turno update(Turno obj) {
+		Turno newObj = buscar(obj.getId());
+		
+		newObj.setNome(obj.getNome()); 
+//		newObj.setGrade(obj.getGrade());
+		newObj.setHoraInicio(obj.getHoraInicio());
+		newObj.setHoraTermino(obj.getHoraTermino());
+
+		return repo.save(newObj);
+	}
+}

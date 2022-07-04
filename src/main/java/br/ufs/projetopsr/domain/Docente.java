@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import br.ufs.projetopsr.domain.enums.Turno;
+import br.ufs.projetopsr.domain.enums.TurnoDia;
 
 @Entity
 public class Docente implements Serializable {
@@ -25,7 +25,7 @@ public class Docente implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	private Turno turno;
+	private TurnoDia turno;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy="docente")
@@ -42,7 +42,7 @@ public class Docente implements Serializable {
 	public Docente() {
 	}
 
-	public Docente(Integer id, String nome, Turno turno) {
+	public Docente(Integer id, String nome, TurnoDia turno) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -65,11 +65,11 @@ public class Docente implements Serializable {
 		this.nome = nome;
 	}
 
-	public Turno getTurno() {
+	public TurnoDia getTurno() {
 		return turno;
 	}
 
-	public void setTurno(Turno turno) {
+	public void setTurno(TurnoDia turno) {
 		this.turno = turno;
 	}
 

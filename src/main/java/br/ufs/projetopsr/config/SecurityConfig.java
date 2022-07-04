@@ -54,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
  			"/cursos/**",
  			"/usuarios/**",
  			"/iclass/**",
+ 			"/turnos/**"
 	};
 	
 	private static final String[] PUBLIC_MATCHERS_POST = {
@@ -64,6 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
  			"/cursos/**",
 			"/auth/forgot/**",
 			"/login",
+ 			"/turnos/**"
 	};
 	
 	@Override
@@ -90,6 +92,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
 			.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
+			.antMatchers(HttpMethod.PUT, "/**").permitAll()
 			.anyRequest().authenticated().and()
 			.oauth2Login()
 //			.loginPage("/oauth_login")

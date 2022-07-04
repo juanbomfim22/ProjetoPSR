@@ -2,8 +2,8 @@ package br.ufs.projetopsr.dto;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -16,14 +16,18 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CredenciaisDTO implements Serializable {
+public class DisciplinaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@NotEmpty(message = "Preenchimento obrigatório")
-	@Email(message = "Email inválido")
-	private String email;
+	@Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 120 caracteres")
+	private String nome;
+	
+	@NotEmpty(message = "Preenchimento obrigatório")
+	@Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 120 caracteres")
+	private String codigo;
+	
+	@NotNull
+	private Integer cargaHoraria;
 		
-	@NotEmpty(message= "Preenchimento obrigatório")
-	@Length(min = 8, message = "A senha deve ter mais de 8 caracteres")
-	private String senha; 	
 }
