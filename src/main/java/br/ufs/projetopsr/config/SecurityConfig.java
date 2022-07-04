@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
@@ -42,16 +41,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			"/swagger-resources/**",
 	        "/swagger-ui/**",
 	        "/v2/api-docs",
-	        "/webjars/**"
+	        "/webjars/**",
+			"/oauth_login",
+			"/loginSuccess",
+			"/loginFailure"
 	};
 	
 	private static final String[] PUBLIC_MATCHERS_GET = {
-			"/docentes/**",
+//			"/docentes/**",
  			"/grades/**",
  			"/disciplinas/**",
  			"/cursos/**",
  			"/usuarios/**",
- 			"/iclass/**"
+ 			"/iclass/**",
 	};
 	
 	private static final String[] PUBLIC_MATCHERS_POST = {
@@ -61,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
  			"/disciplinas/**",
  			"/cursos/**",
 			"/auth/forgot/**",
-			"/login"
+			"/login",
 	};
 	
 	@Override
@@ -75,16 +77,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable(); // primeiro fazer o @Bean Cors..Source (lá embaixo) e depois adicionar essa linha
 		
 
+//		http.authorizeRequests()
+//	      .antMatchers("/oauth_login")
+//	      .permitAll()
+//	      .anyRequest()
+//	      .authenticated()
+//	      .and()
+//	      .oauth2Login()
+//	      .loginPage("/oauth_login");
+		
 		http.authorizeRequests() //.antMatchers("/**").permitAll().anyRequest().authenticated();
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
 			.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
-			.anyRequest().authenticated();
+			.anyRequest().authenticated().and()
+			.oauth2Login()
+//			.loginPage("/oauth_login")
+            .defaultSuccessUrl("/loginSuccess")
+            .failureUrl("/loginFailure");
+	         
 //		
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
  
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		// Teve que remover para funcionar o OAuth
+//		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 	
 	@Override

@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Login Success</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+</head>
+<body>
+<script>
+window.fbAsyncInit=function()
+{
+    // initialize the library with your Facebook API key
+     FB.init({
+      appId      : "7661648650576281",
+      autoLogAppEvents : true,
+      xfbml            : true,
+      version          : 'v14.0'
+    });
+
+    //Fetch the status so that we can log out.
+    //You must have the login status before you can logout,
+    //and if you authenticated via oAuth (server side), this is necessary.
+    //If you logged in via the JavaScript SDK, you can simply call FB.logout()
+    //once the login status is fetched, call handleSessionResponse
+    FB.getLoginStatus(handleSessionResponse);
+}
+
+//handle a session response from any of the auth related calls
+function handleSessionResponse(response) {
+    //if we dont have a session (which means the user has been logged out, redirect the user)
+    if (!response.session) {
+        window.location = "#";
+        return;
+    }
+
+    //if we do have a non-null response.session, call FB.logout(),
+    //the JS method will log the user out of Facebook and remove any authorization cookies
+    FB.logout(handleSessionResponse);
+} 
+</script>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+<h3>
+<div class="label label-info">
+   Welcome, <span th:text="${name}">user</span>!
+   </div>
+<br>
+<!-- LOGOUT só funcina com HTTPS ??-->
+<a class='label label-danger' href="#" onclick="FB.logout(function(e) { console.log(e) });">Logout from FB</a> 
+   </h3>
+</body>
+</html>
