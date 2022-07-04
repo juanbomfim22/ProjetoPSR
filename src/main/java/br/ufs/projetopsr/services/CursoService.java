@@ -3,6 +3,9 @@ package br.ufs.projetopsr.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.ufs.projetopsr.domain.Curso;
@@ -14,6 +17,11 @@ public class CursoService {
 	
 	@Autowired
 	private CursoRepository repo;
+	
+	public Page<Curso> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		return repo.findAll(pageRequest);
+	}
 	
 	public Curso buscar(Integer id) {
 		Optional<Curso> obj = repo.findById(id);

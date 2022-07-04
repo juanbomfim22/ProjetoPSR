@@ -44,28 +44,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	        "/webjars/**",
 			"/oauth_login",
 			"/loginSuccess",
-			"/loginFailure"
+			"/loginFailure",
+ 			"/iclass/**",
 	};
 	
 	private static final String[] PUBLIC_MATCHERS_GET = {
-//			"/docentes/**",
- 			"/grades/**",
- 			"/disciplinas/**",
- 			"/cursos/**",
- 			"/usuarios/**",
- 			"/iclass/**",
- 			"/turnos/**"
-	};
-	
-	private static final String[] PUBLIC_MATCHERS_POST = {
-			"/usuarios/**", 
 			"/docentes/**",
  			"/grades/**",
  			"/disciplinas/**",
  			"/cursos/**",
-			"/auth/forgot/**",
-			"/login",
+ 			"/usuarios/**",
  			"/turnos/**"
+	};
+	
+	private static final String[] PUBLIC_MATCHERS_POST = {
+			"/docentes/**",
+ 			"/grades/**",
+ 			"/disciplinas/**",
+ 			"/cursos/**",
+ 			"/usuarios/**",
+ 			"/turnos/**",
+			"/auth/forgot/**",
+			"/login"
 	};
 	
 	@Override

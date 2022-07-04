@@ -6,6 +6,7 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
+import br.ufs.projetopsr.domain.Turno;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,11 +18,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TurnoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@NotEmpty(message = "Preenchimento obrigatório")
 	@Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 120 caracteres")
 	private String nome;
-
 
 //	@Pattern( regexp = "^\\d{2}:\\d{2}$", message="O horário deve estar no padrão HH:mm")
 //	private Date horaInicio;
@@ -29,11 +29,16 @@ public class TurnoDTO implements Serializable {
 //
 //	@Pattern( regexp = "^\\d{2}:\\d{2}$", message="O horário deve estar no padrão HH:mm")
 //	private Date horaTermino;
-	
+
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String horaInicio;
-	
+
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String horaTermino;
-		
+
+	public TurnoDTO(Turno x) {
+		this.nome = x.getNome();
+		this.horaInicio = x.getHoraInicio();
+		this.horaTermino = x.getHoraTermino();
+	}
 }

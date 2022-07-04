@@ -7,6 +7,7 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
+import br.ufs.projetopsr.domain.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,5 +30,11 @@ public class UsuarioDTO implements Serializable {
 	 
 	@NotEmpty(message= "Preenchimento obrigatório")
 	private String senha;
+	
+	public UsuarioDTO(Usuario x) {
+		this.nome = x.getNome();
+		this.email = x.getEmail();
+//		this.senha = x.getSenha();
+	}
 		
 }

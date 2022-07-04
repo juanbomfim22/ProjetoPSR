@@ -3,12 +3,14 @@ package br.ufs.projetopsr.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.ufs.projetopsr.domain.Disciplina;
 import br.ufs.projetopsr.dto.DisciplinaDTO;
 import br.ufs.projetopsr.repositories.DisciplinaRepository;
-import br.ufs.projetopsr.repositories.UsuarioRepository;
 import br.ufs.projetopsr.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -16,9 +18,12 @@ public class DisciplinaService {
 	
 	@Autowired
 	private DisciplinaRepository repo;
+	 
 	
-	@Autowired
-	private UsuarioRepository usuarioRepo;
+	public Page<Disciplina> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		return repo.findAll(pageRequest);
+	}
 	
 	public Disciplina buscar(Integer id) {
 		Optional<Disciplina> obj = repo.findById(id);

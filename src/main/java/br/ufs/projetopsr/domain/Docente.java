@@ -25,7 +25,8 @@ public class Docente implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	private TurnoDia turno;
+	
+	private Integer turno;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy="docente")
@@ -46,7 +47,7 @@ public class Docente implements Serializable {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.turno = turno;
+		this.turno = turno != null ? turno.getId() : null;
 	}
 	
 	public Integer getId() {
@@ -66,11 +67,11 @@ public class Docente implements Serializable {
 	}
 
 	public TurnoDia getTurno() {
-		return turno;
+		return TurnoDia.toEnum(turno);
 	}
 
 	public void setTurno(TurnoDia turno) {
-		this.turno = turno;
+		this.turno = turno.getId();
 	}
 
 	public List<Restricao> getRestricoes() {

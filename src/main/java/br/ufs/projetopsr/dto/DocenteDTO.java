@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
-import br.ufs.projetopsr.domain.Disciplina;
+import br.ufs.projetopsr.domain.Docente;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,23 +17,20 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DisciplinaDTO implements Serializable {
+public class DocenteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@NotEmpty(message = "Preenchimento obrigatório")
 	@Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 120 caracteres")
 	private String nome;
+
+	 	 
+	@NotNull(message= "Preenchimento obrigatório")
+	private Integer turno;
 	
-	@NotEmpty(message = "Preenchimento obrigatório")
-	@Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 120 caracteres")
-	private String codigo;
-	
-	@NotNull
-	private Integer cargaHoraria;
-		
-	public DisciplinaDTO(Disciplina x) {
+	public DocenteDTO(Docente x) {
 		this.nome = x.getNome();
-		this.codigo = x.getCodigo();
-		this.cargaHoraria = x.getCargaHoraria();
+		this.turno = x.getTurno().getId(); 
 	}
+		
 }
