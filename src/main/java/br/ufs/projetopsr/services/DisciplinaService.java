@@ -3,6 +3,7 @@ package br.ufs.projetopsr.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -19,6 +20,14 @@ public class DisciplinaService {
 	@Autowired
 	private DisciplinaRepository repo;
 	 
+	public void delete(Integer id) {
+		buscar(id);
+		try {
+			repo.deleteById(id);			
+		} catch(DataIntegrityViolationException e) {
+			throw new DataIntegrityViolationException("Não é possível excluir a disciplina");
+		}
+	}
 	
 	public Page<Disciplina> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
