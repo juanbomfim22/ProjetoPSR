@@ -13,7 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import br.ufs.projetopsr.domain.enums.TurnoDia;
@@ -29,15 +29,15 @@ public class Docente implements Serializable {
 	
 	private Integer turno;
 	
-	@JsonManagedReference
+	
 	@OneToMany(mappedBy="docente",  cascade = CascadeType.ALL)
 	private List<Restricao> restricoes = new ArrayList<>();
 	
-	@JsonBackReference
+	@JsonIgnore
 	@ManyToMany(mappedBy="docentes")
 	private List<Grade> grades = new ArrayList<>();
 
-	@JsonManagedReference
+	
 	@OneToMany(mappedBy="docente", cascade = CascadeType.ALL)
 	private List<Disciplina> disciplinas = new ArrayList<>();
 	

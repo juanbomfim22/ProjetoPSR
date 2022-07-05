@@ -34,7 +34,7 @@ public class Turno implements Serializable {
 	
 	private String horaTermino;
 	
-//	@JsonManagedReference
+//	
 //	@ManyToOne
 //	@JoinColumn(name="grade_id")
 //	private Grade grade;

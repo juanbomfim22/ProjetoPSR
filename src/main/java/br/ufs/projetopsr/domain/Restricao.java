@@ -12,7 +12,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.ufs.projetopsr.domain.enums.DiaDaSemana;
 
@@ -27,7 +27,7 @@ public class Restricao implements Serializable {
 	private String nome;
 	private Integer diaDaSemana;
 	
-	@JsonBackReference
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="docente_id")
 	private Docente docente;

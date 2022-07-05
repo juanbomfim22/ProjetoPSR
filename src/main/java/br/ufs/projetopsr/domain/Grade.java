@@ -14,9 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,7 +35,7 @@ public class Grade implements Serializable {
 	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
 	private Date horaCriacao;
 	
-	@JsonBackReference
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="usuario_id")
 	private Usuario usuario;
@@ -44,15 +43,14 @@ public class Grade implements Serializable {
 //	@JsonIgnore
 //	@OneToMany(mappedBy="grade")
 //	private List<Turno> turnos = new ArrayList<>();
-	
-	@JsonManagedReference
+	 
 	@ManyToMany
 	@JoinTable(name= "GRADE_DOCENTE",
 	joinColumns = @JoinColumn(name= "grade_id"),
 	inverseJoinColumns = @JoinColumn(name= "docente_id"))
 	private List<Docente> docentes = new ArrayList<>();
 	
-	@JsonBackReference
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name= "GRADE_DISCIPLINA",
 	joinColumns = @JoinColumn(name= "grade_id"),
