@@ -19,6 +19,8 @@ import lombok.NoArgsConstructor;
 public class TurnoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	private Integer id;
+	
 	@NotEmpty(message = "Preenchimento obrigatório")
 	@Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 120 caracteres")
 	private String nome;
@@ -37,6 +39,7 @@ public class TurnoDTO implements Serializable {
 	private String horaTermino;
 
 	public TurnoDTO(Turno x) {
+		this.id = x.getId();
 		this.nome = x.getNome();
 		this.horaInicio = x.getHoraInicio();
 		this.horaTermino = x.getHoraTermino();

@@ -20,17 +20,20 @@ import lombok.NoArgsConstructor;
 public class DocenteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	private Integer id;
+
 	@NotEmpty(message = "Preenchimento obrigatório")
 	@Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 120 caracteres")
 	private String nome;
 
 	 	 
 	@NotNull(message= "Preenchimento obrigatório")
-	private Integer turno;
+	private String turno;
 	
 	public DocenteDTO(Docente x) {
+		this.id = x.getId();
 		this.nome = x.getNome();
-		this.turno = x.getTurno().getId(); 
+		this.turno = x.getTurno().getValor(); 
 	}
 		
 }

@@ -20,6 +20,8 @@ import lombok.NoArgsConstructor;
 public class GradeDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	private Integer id;
+	
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String nome;
 	
@@ -27,6 +29,7 @@ public class GradeDTO implements Serializable {
 	private Date horaCriacao;
 	
 	public GradeDTO(Grade x) {
+		this.id = x.getId();
 		this.nome = x.getNome();
 		this.horaCriacao = x.getHoraCriacao();
 	}
