@@ -12,8 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import br.ufs.projetopsr.domain.enums.CursoSigla;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,7 +32,7 @@ public class Curso implements Serializable {
 	private Integer periodo;
 	private String instituicaoDeEnsino;
 	
-	@JsonIgnore
+	
 	@ManyToMany
 	@JoinTable(name= "CURSO_DISCIPLINA",
 		joinColumns = @JoinColumn(name= "curso_id"),
