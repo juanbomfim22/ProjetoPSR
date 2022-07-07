@@ -19,6 +19,20 @@ public class DocenteService {
 	@Autowired
 	private DocenteRepository repo;
 
+	public Docente update(Docente obj, Integer id) {
+		buscar(id);
+		Docente newObj = buscar(id);
+		
+		newObj.setNome(obj.getNome()); 
+		newObj.setDisciplinas(obj.getDisciplinas());
+		newObj.setGrades(obj.getGrades());
+		newObj.setNome(obj.getNome());
+		newObj.setRestricoes(obj.getRestricoes());
+		newObj.setTurno(obj.getTurno());
+	
+		return repo.save(newObj);
+	}
+	
 	public void delete(Integer id) {
 		buscar(id);
 		try {

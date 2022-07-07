@@ -114,10 +114,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	// Permite o acesso a múltiplas fontes "/**" com configurações básicas
+//	@Bean
+//	CorsConfigurationSource corsConfigurationSource() { 
+//		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+//		return source;
+//	}
+	
 	@Bean
-	CorsConfigurationSource corsConfigurationSource() { 
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+		configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
 	

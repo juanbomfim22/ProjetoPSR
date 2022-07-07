@@ -51,7 +51,7 @@ public class DisciplinaResource {
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@RequestBody @Validated DisciplinaDTO dto, @PathVariable Integer id){
 		Disciplina obj = service.fromDTO(dto, id);
-		obj = service.update(obj);
+		obj = service.update(obj, id);
 		return ResponseEntity.noContent().build();
 	}
 	

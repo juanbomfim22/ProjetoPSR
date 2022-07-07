@@ -46,17 +46,17 @@ public class DisciplinaService {
 		return obj;
 	}
 	
-	public Disciplina update(Disciplina obj) {
-		Disciplina newObj = buscar(obj.getId());
+	public Disciplina update(Disciplina obj, Integer id) {
+		buscar(id);
+		Disciplina newObj = buscar(id);
 		
+		newObj.setNome(obj.getNome());  
+		newObj.setGrades(obj.getGrades());
 		newObj.setNome(obj.getNome()); 
 		newObj.setCargaHoraria(obj.getCargaHoraria());
-		newObj.setCodigo(obj.getCodigo());
 		newObj.setCursos(obj.getCursos());
 		newObj.setDocente(obj.getDocente());
-		newObj.setGrades(obj.getGrades());
-		
-
+	
 		return repo.save(newObj);
 	}
 	
