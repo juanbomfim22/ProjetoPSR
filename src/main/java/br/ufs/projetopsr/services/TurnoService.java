@@ -53,14 +53,14 @@ public class TurnoService {
 
 	// UPDATE
 	public Turno fromDTO(TurnoDTO dto, Integer id) {
-		Turno tmp = buscar(id);
+//		Turno tmp = buscar(id);
 //		Grade gr = gradeRepo.findById(dto.getGradeId())
 //				.orElseThrow(() -> new ObjectNotFoundException("Grade não encontrada! Id: " + dto.getGradeId()));
-
-//		Turno t = new Turno(null, dto.getNome(), dto.getHoraInicio(), dto.getHoraTermino(), tmp.getGrade());
-//		return t;
+		buscar(id);
+		Turno t = new Turno(null, dto.getNome(), dto.getHoraInicio(), dto.getHoraTermino());
+		return t;
 		
-		return tmp;
+//		return tmp;
 	}
 	
 	// INSERT
