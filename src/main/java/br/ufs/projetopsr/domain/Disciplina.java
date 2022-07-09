@@ -37,7 +37,7 @@ public class Disciplina implements Serializable {
 	@JoinColumn(name="docente_id")
 	private Docente docente;
 	 
-	@JsonIgnore
+	
 	@ManyToMany(mappedBy="disciplinas")
 	private List<Curso> cursos = new ArrayList<>();
 	 

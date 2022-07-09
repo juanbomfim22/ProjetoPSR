@@ -51,18 +51,15 @@ public class DisciplinaService {
 		Disciplina newObj = buscar(id);
 		
 		newObj.setNome(obj.getNome());  
-		newObj.setGrades(obj.getGrades());
-		newObj.setNome(obj.getNome()); 
 		newObj.setCargaHoraria(obj.getCargaHoraria());
-		newObj.setCursos(obj.getCursos());
-		newObj.setDocente(obj.getDocente());
+		newObj.setCodigo(obj.getCodigo());
 	
 		return repo.save(newObj);
 	}
 	
 	public Disciplina fromDTO(DisciplinaDTO dto, Integer id) {
-		Disciplina tmp = buscar(id); // Existe?
-		Disciplina d = new Disciplina(tmp.getId() , dto.getNome(), dto.getCodigo(), dto.getCargaHoraria(), tmp.getDocente());
+		Disciplina ds = buscar(id); 
+		Disciplina d = new Disciplina(id, dto.getNome(), dto.getCodigo(), dto.getCargaHoraria(), ds.getDocente());
 		return d; 
 	}
 	
