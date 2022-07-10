@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.ufs.projetopsr.domain.Usuario;
 import br.ufs.projetopsr.repositories.UsuarioRepository;
-import br.ufs.projetopsr.security.UserSpringSecurity;
+import br.ufs.projetopsr.security.UserPrincipal;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -22,6 +22,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		if(usr == null) {
 			throw new UsernameNotFoundException(email);
 		}
-		return new UserSpringSecurity(usr.getId(), usr.getEmail(), usr.getSenha(), usr.getPerfis());
+		return new UserPrincipal(usr.getId(), usr.getEmail(), usr.getSenha(), UserPrincipal.toList(usr.getPerfis()));
 	}
 }

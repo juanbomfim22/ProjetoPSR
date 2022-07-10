@@ -17,41 +17,41 @@ import br.ufs.projetopsr.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class UsuarioService {
-	
+
 	@Autowired
 	private BCryptPasswordEncoder pe;
-	
+
 	@Autowired
 	private UsuarioRepository repo;
-	
+
 	public void delete(Integer id) {
 		buscar(id);
 		try {
-			repo.deleteById(id);			
-		} catch(DataIntegrityViolationException e) {
+			repo.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityViolationException("Não é possível excluir o usuário");
 		}
 	}
-	
+
 	public Page<Usuario> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
 	}
-	
+
 	public Usuario buscar(Integer id) {
 		Optional<Usuario> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"Objeto não encontrado! Id: " + id + ", Tipo: " + Usuario.class.getName() ));
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Usuario.class.getName()));
 	}
-	
+
 	public Usuario inserir(Usuario obj) {
 		obj.setId(null);
 		obj = repo.save(obj);
 		return obj;
 	}
-	
+
 	public Usuario fromDTO(UsuarioDTO objDto) {
-		Usuario usr = new Usuario(null, objDto.getNome(), objDto.getEmail(), pe.encode(objDto.getSenha()));
+		Usuario usr = new Usuario(null, objDto.getNome(), objDto.getEmail(), null, pe.encode(objDto.getSenha()));
 		return usr;
 	}
 }

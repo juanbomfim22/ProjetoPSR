@@ -5,6 +5,7 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,7 @@ public class UsuarioResource {
 	private UsuarioService service;
 	
 	@GetMapping
+//	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Page<UsuarioDTO>> findPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "5") Integer linesPerPage,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction,
@@ -39,16 +41,18 @@ public class UsuarioResource {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasRole('CLIENTE') && #id == authentication.principal.id")
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 		Usuario obj = service.buscar(id);
 		return ResponseEntity.ok(obj);
 	}
-//	
-//	@PreAuthorize("hasAnyRole('ADMIN')")
+	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Void> inserir(@RequestBody @Validated UsuarioDTO obj){
 		Usuario user = service.fromDTO(obj);
 		user = service.inserir(user);
+		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(user.getId()).toUri();
 		return ResponseEntity.created(uri).build();
@@ -56,6 +60,7 @@ public class UsuarioResource {
 	
 	// SE O ENDPOINT NAO TIVER CARREGANDO, OLHE NO SPRING SECURITY...
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id){
 		service.delete(id);
