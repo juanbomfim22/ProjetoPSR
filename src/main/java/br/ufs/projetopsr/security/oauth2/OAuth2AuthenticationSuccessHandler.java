@@ -1,6 +1,6 @@
 package br.ufs.projetopsr.security.oauth2;
 
-import static br.ufs.projetopsr.security.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
+import static br.ufs.projetopsr.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 import java.io.IOException;
 import java.net.URI;
@@ -19,7 +19,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.ufs.projetopsr.config.AppProperties;
 import br.ufs.projetopsr.resources.exceptions.BadRequestException;
-import br.ufs.projetopsr.security.HttpCookieOAuth2AuthorizationRequestRepository;
 import br.ufs.projetopsr.security.JWTUtil;
 import br.ufs.projetopsr.security.util.CookieUtils;
 
@@ -62,6 +61,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             throw new BadRequestException("Unauthorized Redirect URI and can't proceed with the authentication");
         }
 
+        // Esse será o token retornado ao frontend na url ?token=...
+        // Estara com as informaçoes do usuario logado por OAuth
+        // No caso esta em base64 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
         System.err.println(authentication.getPrincipal());
         String token = jwtUtil.generateToken(authentication.getPrincipal().toString());

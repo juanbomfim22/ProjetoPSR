@@ -51,7 +51,7 @@ public class UsuarioService {
 	}
 
 	public Usuario fromDTO(UsuarioDTO objDto) {
-		Usuario usr = new Usuario(null, objDto.getNome(), objDto.getEmail(), null, pe.encode(objDto.getSenha()));
+		Usuario usr = new Usuario(null, objDto.getNome(), objDto.getEmail(), null, null, pe.encode(objDto.getSenha()));
 		return usr;
 	}
 }

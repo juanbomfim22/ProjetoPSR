@@ -1,5 +1,7 @@
 package br.ufs.projetopsr.services;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -8,7 +10,6 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import br.ufs.projetopsr.domain.Usuario;
 import br.ufs.projetopsr.domain.enums.AuthProvider;
@@ -37,18 +38,26 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
     }
 
+    private AuthProvider getAuthProviderFrom(OAuth2UserRequest oAuth2UserRequest) {
+    	return AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId().toUpperCase());
+    }
+    
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) throws Exception {
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
-        if(StringUtils.hasLength(oAuth2UserInfo.getEmail())) {
-            throw new Exception("Email not found from OAuth2 provider");
-        }
+
+        // If email is null.....
+//        if(oAuth2UserInfo.getEmail() == null || oAuth2UserInfo.getEmail().isEmpty()) {
+//            throw new Exception("Email not found from OAuth2 provider");
+//        }
 
         Usuario userOptional = repo.findByEmail(oAuth2UserInfo.getEmail());
         Usuario user;
         if(userOptional != null) {
             user = userOptional;
-            if(!user.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
-                throw new Exception("Looks like you're signed up with " +
+            if(!user.getProvider().equals(getAuthProviderFrom(oAuth2UserRequest))) {
+                
+            	
+            	throw new Exception("Looks like you're signed up with " +
                         user.getProvider() + " account. Please use your " + user.getProvider() +
                         " account to login.");
             }
@@ -63,15 +72,20 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         return prin;
     }
 
-    private Usuario registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
-    	Usuario user = new Usuario();
-
-        user.setProvider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
-        user.setProviderId(oAuth2UserInfo.getId());
-        user.setNome(oAuth2UserInfo.getNome());
-        user.setEmail(oAuth2UserInfo.getEmail());
-        user.setImagemPerfil(oAuth2UserInfo.getImagemPerfil());
-        
+    private Usuario registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo info) {
+    	String email = info.getEmail();
+    	String nome = info.getNome();
+    	
+    	if(info.getEmail() == null || info.getEmail().isEmpty()) {
+    		String login = (String) info.getAttributes().get("login");
+    		if(login == null) login = UUID.randomUUID().toString().replaceAll("-","");
+    		email = login + "_auto_generated@example.com";
+    	}
+    	
+    	Usuario user = new Usuario(
+    			null, nome, email, info.getImagemPerfil(), info.getId(), null
+    	);    
+    	user.setProvider(getAuthProviderFrom(oAuth2UserRequest));
         return repo.save(user);
     }
 

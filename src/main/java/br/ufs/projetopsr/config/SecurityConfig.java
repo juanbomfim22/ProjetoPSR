@@ -27,10 +27,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import br.ufs.projetopsr.security.HttpCookieOAuth2AuthorizationRequestRepository;
 import br.ufs.projetopsr.security.JWTAuthenticationFilter;
 import br.ufs.projetopsr.security.JWTAuthorizationFilter;
 import br.ufs.projetopsr.security.JWTUtil;
+import br.ufs.projetopsr.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import br.ufs.projetopsr.security.oauth2.OAuth2AuthenticationFailureHandler;
 import br.ufs.projetopsr.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import br.ufs.projetopsr.services.CustomOAuth2UserService;
 
@@ -51,6 +52,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired 
 	private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 	
+	@Autowired 
+	private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+
 	@Autowired
 	private CustomOAuth2UserService customOAuth2UserService;
 	
@@ -127,13 +131,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //            .defaultSuccessUrl("/loginSuccess")
 //            .failureUrl("/loginFailure")
 			.oauth2Login()
-			.authorizationEndpoint()
-			.authorizationRequestRepository(cookieAuthorizationRequestRepository())
+				.authorizationEndpoint()
+				.baseUri("/oauth2/authorization")
+				.authorizationRequestRepository(cookieAuthorizationRequestRepository())
 			.and()
-			.userInfoEndpoint()
-            .userService(customOAuth2UserService)
+				.redirectionEndpoint()
+				.baseUri("/oauth2/callback/*")
+			.and()
+				.userInfoEndpoint()
+	            .userService(customOAuth2UserService)
             .and()
-            .successHandler(oAuth2AuthenticationSuccessHandler);
+            	.successHandler(oAuth2AuthenticationSuccessHandler)
+            	.failureHandler(oAuth2AuthenticationFailureHandler);
 	         
 //		
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
