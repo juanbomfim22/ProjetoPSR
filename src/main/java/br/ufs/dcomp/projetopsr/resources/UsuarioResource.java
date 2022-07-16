@@ -41,7 +41,7 @@ public class UsuarioResource {
 	}
 
 	@GetMapping("/{id}")
-//	@PreAuthorize("hasRole('CLIENTE') && #id == authentication.principal.id")
+	@PreAuthorize("hasRole('CLIENTE') && #id == authentication.principal.id")
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 		Usuario obj = service.buscar(id);
 		return ResponseEntity.ok(obj);
