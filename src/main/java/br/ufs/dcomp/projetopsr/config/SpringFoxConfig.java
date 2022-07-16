@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 
+import com.fasterxml.classmate.TypeResolver;
+
+import br.ufs.dcomp.projetopsr.dto.CredenciaisDTO;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseBuilder;
@@ -20,12 +23,16 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
-@Configuration
+@Configuration 
 public class SpringFoxConfig { 
 	
 	@Bean
-	public Docket swagger() {
-		return new Docket(DocumentationType.SWAGGER_2).select()
+	public Docket swagger(TypeResolver typeResolver) {
+		return new Docket(DocumentationType.SWAGGER_2)
+				.additionalModels(
+						typeResolver.resolve(CredenciaisDTO.class)
+				 )
+				.select()
 				.apis(RequestHandlerSelectors.basePackage("br.ufs.dcomp.projetopsr.resources")).paths(PathSelectors.any())
 				
 				.build().apiInfo(apiInfo()).useDefaultResponseMessages(false).globalResponses(HttpMethod.GET,
