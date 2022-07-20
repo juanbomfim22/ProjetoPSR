@@ -4,16 +4,15 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -30,7 +29,7 @@ public class Restricao implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "restricao_id")
 	private Integer id;
 	
 	// Atenção o horário é uma string de números
@@ -43,11 +42,11 @@ public class Restricao implements Serializable {
 	
 //	@OneToMany(mappedBy = "restricao")
 //	private List<Disciplina> preferencias = new ArrayList<>();
-
-	@NotNull
-	@JsonIgnore
+ 
+	@JsonIgnore  
 	@OneToOne
 	@JoinColumn(name="docente_id")
+    @MapsId 
 	private Docente docente;
 	
 	public Restricao() {

@@ -11,7 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,7 +30,6 @@ public class Grade implements Serializable {
 	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
 	private Date horaCriacao;
 	
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="turno_id")
 	private Turno turno;
@@ -58,11 +56,12 @@ public class Grade implements Serializable {
 //	inverseJoinColumns = @JoinColumn(name= "disciplina_id"))
 //	private List<Disciplina> disciplinas = new ArrayList<>();
 		 
-	public Grade(Integer id, String nome, Date horaCriacao) {
+	public Grade(Integer id, String nome, Date horaCriacao, Turno turno) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.setHoraCriacao(horaCriacao);
+		this.horaCriacao = horaCriacao;
+		this.turno = turno;
 	}
  
 }

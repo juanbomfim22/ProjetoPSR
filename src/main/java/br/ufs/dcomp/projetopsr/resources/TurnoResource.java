@@ -56,11 +56,17 @@ public class TurnoResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@PutMapping("/{id}/docentes")
+	public ResponseEntity<Void> updateDocentes(@PathVariable Integer id, @RequestParam(value = "ids") String[] params){
+		service.updateBulk(params, id);
+		return ResponseEntity.noContent().build(); 
+	}
+	
 	@PutMapping("/{id}") 
 	public ResponseEntity<Void> update(@RequestBody @Validated TurnoDTO objDto, @PathVariable Integer id) {
 		Turno obj = service.fromDTO(objDto, id);
 		obj.setId(id);
-		obj = service.update(obj);
+		obj = service.update(obj, id);
 		return ResponseEntity.noContent().build();
 	}
 

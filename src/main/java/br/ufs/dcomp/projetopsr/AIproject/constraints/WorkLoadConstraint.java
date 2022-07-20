@@ -1,11 +1,9 @@
 package br.ufs.dcomp.projetopsr.AIproject.constraints;
 
-import java.util.HashMap;
 import java.util.List;
 
 import aima.core.search.csp.Assignment;
 import aima.core.search.csp.Constraint;
-import aima.core.search.csp.Domain;
 import br.ufs.dcomp.projetopsr.AIproject.variables.StaffMember;
 import br.ufs.dcomp.projetopsr.AIproject.variables.TimeBox;
 import br.ufs.dcomp.projetopsr.AIproject.variables.WorkingGroup;
@@ -27,24 +25,24 @@ public class WorkLoadConstraint<VAR extends TimeBox, VAL extends WorkingGroup> i
 
 	@Override
 	public boolean isSatisfiedWith(Assignment<VAR, VAL> assignment) {
-		HashMap<StaffMember, Integer> map = new HashMap<>();
-		
-		for(StaffMember member : members) {
-			map.put(member, 0);
-		}
-		
-		for(VAR timeBox : getScope()) {
-			WorkingGroup value = assignment.getValue(timeBox);
-			if(value == null) return true;
-			for(StaffMember member: value.getMembers())
-				if(member != null)
-					map.put(member, map.get(member)+1);
-		}
-		
-		for (StaffMember member : members) {
-			if(member != null && member.getHour() != map.get(member)) 
-				return false;
-		} 
+//		HashMap<StaffMember, Integer> map = new HashMap<>();
+//		
+//		for(StaffMember member : members) {
+//			map.put(member, 0);
+//		}
+//		
+//		for(VAR timeBox : getScope()) {
+//			WorkingGroup value = assignment.getValue(timeBox);
+//			if(value == null) return true;
+//			for(StaffMember member: value.getMembers())
+//				if(member != null)
+//					map.put(member, map.get(member)+1);
+//		}
+//		
+//		for (StaffMember member : members) {
+//			if(member != null && member.getHour() != map.get(member)) 
+//				return false;
+//		} 
 		return true;
 	}      
 }

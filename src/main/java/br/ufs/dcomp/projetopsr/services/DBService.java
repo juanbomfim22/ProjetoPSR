@@ -1,10 +1,11 @@
 package br.ufs.dcomp.projetopsr.services;
 
 import java.text.ParseException;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import br.ufs.dcomp.projetopsr.repositories.UsuarioRepository;
 
 @Service
 public class DBService {
+	
 	@Autowired
 	private BCryptPasswordEncoder be;
 	
@@ -59,7 +61,7 @@ public class DBService {
 	@Autowired 
 	private InstituicaoRepository instituicaoRepository;
 	
-	
+
 	public void instantiateTestDatabase() throws ParseException {
 		Usuario u1 = new Usuario(null, "juan", "juanbomfim21@gmail.com", null, null, be.encode("123"));
 		Usuario u2 = new Usuario(null, "juan", "juan@teste2.com", null, null, be.encode("123"));
@@ -69,31 +71,34 @@ public class DBService {
 		
 		Curso c1 = new Curso(null,"Engenharia de Computacao", CursoSigla.EC, 6, i1);
 		
-		Turno t1 = new Turno(null, "manha",4, 50, "11:00", i1);
-		t1.setDiasDaSemana(new HashSet<>(Arrays.asList(DiaDaSemana.TERCA, DiaDaSemana.SEXTA)));
-		Turno t2 = new Turno(null, "tarde",4, 50,"11:00", i1);
-		Turno t3 = new Turno(null, "noite", 4, 50, "11:00", i1);
+		Turno t1 = new Turno(null, "manha",4, 50, LocalTime.parse("11:00"), EnumSet.of(DiaDaSemana.TERCA, DiaDaSemana.SEXTA), null);
+		Turno t2 = new Turno(null, "tarde",4, 50,  LocalTime.parse("11:00"),null, null);
+		Turno t3 = new Turno(null, "noite", 4, 50,  LocalTime.parse("11:00"),null,null);
+		
+
 		
 		Docente doc1 = new Docente(null, "Carlos", t1);
 		Docente doc2 = new Docente(null, "Tarcisio", t2);
 		Docente doc3 = new Docente(null, "Leila", t3);
 		Docente doc4 = new Docente(null, "Beatriz", t1);
 		
+
 		Restricao r1a = new Restricao(null, doc1);
-		Restricao r2a = new Restricao(null, doc2);
+		Restricao r2a = new Restricao(null, doc2); 
 
 		Disciplina d1 = new Disciplina(null, "Inteligencia Artificial", "IA", 4, doc1);
 		Disciplina d2 = new Disciplina(null, "Eng Software", "ES", 8, doc2);
 		Disciplina d3 = new Disciplina(null, "Programacao Paralela", "PP", 4, doc2); 
+
 		
 		
-		// Deve repetir o saveAll e usar o flush, se nao dá erro Transactional ...
+//		 Deve repetir o saveAll e usar o flush, se nao dá erro Transactional ...
 		usuarioRepository.saveAll(Arrays.asList(u1,u2,u3));
 		instituicaoRepository.saveAll(Arrays.asList(i1));
 		turnoRepository.saveAll(Arrays.asList(t1, t2, t3));
 		cursoRepository.saveAll(Arrays.asList(c1));
-		docenteRepository.saveAll(Arrays.asList(doc1, doc2, doc3, doc4));
 		restricaoRepository.saveAll(Arrays.asList(r1a, r2a));
+		docenteRepository.saveAll(Arrays.asList(doc1, doc2, doc3, doc4));
 		disciplinaRepository.saveAll(Arrays.asList(d1, d2, d3));
 		
 		usuarioRepository.flush();
@@ -101,7 +106,7 @@ public class DBService {
 		turnoRepository.flush();
 		cursoRepository.flush();
 		docenteRepository.flush();
-		restricaoRepository.flush();
+//		restricaoRepository.flush();
 		disciplinaRepository.flush();
 		//
 		
@@ -132,7 +137,7 @@ public class DBService {
 		disciplinaRepository.saveAll(Arrays.asList(d1, d2, d3));
 		restricaoRepository.saveAll(Arrays.asList(r1a, r2a));
 		 
-		Grade g1 = new Grade(null, "Grade UFS EC", new Date());
+		Grade g1 = new Grade(null, "Grade UFS EC", new Date(), t1);
 		
 //		Turno t1 = new Turno(null, "manha", new Date(), new Date(),g1);
 //		Turno t2 = new Turno(null, "tarde",new Date(), new Date(),g1);
@@ -146,16 +151,16 @@ public class DBService {
 		
 		// apagar
 //		usuarioRepository.saveAll(Arrays.asList(u1));
-		gradeRepository.saveAll(Arrays.asList(g1));
-		turnoRepository.saveAll(Arrays.asList(t1, t2, t3));
-		
-		turnoRepository.flush();
-		usuarioRepository.flush();
-		gradeRepository.flush();
-		//
-
-		turnoRepository.saveAll(Arrays.asList(t1, t2, t3));
-		gradeRepository.saveAll(Arrays.asList(g1));
-		usuarioRepository.saveAll(Arrays.asList(u1, u2, u3));
+//		gradeRepository.saveAll(Arrays.asList(g1));
+//		turnoRepository.saveAll(Arrays.asList(t1, t2, t3));
+//		
+//		turnoRepository.flush();
+//		usuarioRepository.flush();
+//		gradeRepository.flush();
+//		//
+//
+//		turnoRepository.saveAll(Arrays.asList(t1, t2, t3));
+//		gradeRepository.saveAll(Arrays.asList(g1));
+//		usuarioRepository.saveAll(Arrays.asList(u1, u2, u3));
 	}
 }

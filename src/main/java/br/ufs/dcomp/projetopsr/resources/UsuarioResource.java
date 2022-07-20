@@ -47,7 +47,7 @@ public class UsuarioResource {
 		return ResponseEntity.ok(obj);
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+//	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Void> inserir(@RequestBody @Validated UsuarioDTO obj){
 		Usuario user = service.fromDTO(obj);

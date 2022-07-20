@@ -3,6 +3,7 @@ package br.ufs.dcomp.projetopsr.resources;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,8 +48,14 @@ public class DocenteResource {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> update(@RequestBody Docente d, @PathVariable Integer id) {
-		Docente obj = service.update(d, id); 
+	public ResponseEntity<Void> update(@RequestBody @Validated DocenteDTO d, @PathVariable Integer id) {
+		Docente obj = service.update(service.fromDTO(d, id), id); 
+		return ResponseEntity.noContent().build();
+	}
+	
+	@PutMapping("/{id}/disciplinas")
+	public ResponseEntity<Void> updateDisciplinas(@PathVariable Integer id, @RequestParam(value = "ids") String[] params) {
+		service.updateBulk(params, id); 
 		return ResponseEntity.noContent().build();
 	}
 	

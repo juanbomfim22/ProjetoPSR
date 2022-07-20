@@ -47,7 +47,7 @@ public class DisciplinaService {
 	}
 	
 	public Disciplina update(Disciplina obj, Integer id) {
-		buscar(id);
+//		buscar(id);
 		Disciplina newObj = buscar(id);
 		
 		newObj.setNome(obj.getNome());  

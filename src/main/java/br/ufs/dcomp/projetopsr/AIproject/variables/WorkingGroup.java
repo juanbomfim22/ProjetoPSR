@@ -3,22 +3,25 @@ package br.ufs.dcomp.projetopsr.AIproject.variables;
 import java.util.List;
 
 import aima.core.search.csp.Variable;
+import br.ufs.dcomp.projetopsr.domain.Docente;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+// É o que pode colocar dentro de cada Timebox
+// Uma disciplina com os membros (professores)
+@Getter
+@Setter
+@ToString
 public class WorkingGroup extends Variable {
-	private List<StaffMember> members;
+	private List<Docente> members;
+	
 	public WorkingGroup(String name) {
 		super(name);
 	}
 	
-	public WorkingGroup(List<StaffMember> members) {
+	public WorkingGroup(List<Docente> members) {
 		this("");
-		this.members = members;
-	}
-	
-	public List<StaffMember> getMembers() {
-		return members;
-	}
-	public void setMembers(List<StaffMember> members) {
 		this.members = members;
 	}
 
@@ -27,6 +30,5 @@ public class WorkingGroup extends Variable {
 		return members.toString();
 	}
 	
-	
-
+	 
 }

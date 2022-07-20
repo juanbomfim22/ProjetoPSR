@@ -13,38 +13,41 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Entity 
 public class Docente implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
+	
 	private String nome;
 	
-	@NotNull
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "turno_id")
 	private Turno turno;
-	
+	 
 	@OneToOne(mappedBy="docente", cascade = CascadeType.ALL)
-	private Restricao restricao;
-//	private List<Restricao> restricao = new ArrayList<>();
+	private Restricao restricao; 
 	
 //	@JsonIgnore
 //	@ManyToMany(mappedBy="docentes")
 //	private List<Grade> grades = new ArrayList<>();
-	
-	@OneToMany(mappedBy="docente", cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy="docente", cascade = CascadeType.MERGE)
 	private List<Disciplina> disciplinas = new ArrayList<>();
 	 
 	public Docente(Integer id, String nome, Turno turno) {
@@ -52,5 +55,11 @@ public class Docente implements Serializable {
 		this.nome = nome;
 		this.turno = turno;
 	}
+
+	@Override
+	public String toString() {
+		return nome;
+	}
 	 
+	
 }

@@ -3,7 +3,7 @@ package br.ufs.dcomp.projetopsr.domain;
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
@@ -23,10 +23,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.ufs.dcomp.projetopsr.domain.enums.DiaDaSemana;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 public class Turno implements Serializable {
@@ -56,6 +58,9 @@ public class Turno implements Serializable {
 	@JsonFormat(pattern="HH:mm")
 	private LocalTime horaInicio;
 	
+	@ElementCollection(fetch= FetchType.EAGER)
+	private Set<DiaDaSemana> diasDaSemana;
+
 //	@JsonFormat(pattern="HH:mm")
 //	private LocalTime horaTermino;
 	
@@ -64,24 +69,23 @@ public class Turno implements Serializable {
 	@JoinColumn(name = "instituicao_id")
 	private Instituicao instituicao;
 
-	@ElementCollection(fetch= FetchType.EAGER)
-	private Set<DiaDaSemana> diasDaSemana = new HashSet<>();
-
-	@JsonIgnore
 	@OneToMany(mappedBy= "turno")
 	private List<Docente> docentes = new ArrayList<>();
 
-	
+	@JsonIgnore
 	@OneToMany(mappedBy= "turno")
 	private List<Grade> grades = new ArrayList<>();
 	
-	public Turno(Integer id, String nome, Integer qtdAulasDia,  Integer duracaoAula, String horaInicio, Instituicao instituicao) {
+	public Turno(Integer id, String nome, Integer qtdAulasDia,  Integer duracaoAula, LocalTime horaInicio, 
+			EnumSet<DiaDaSemana> set, 
+			Instituicao instituicao
+			) {
 		this.id = id;
 		this.nome = nome;
 		this.qtdAulasDia = qtdAulasDia;
 		this.duracaoAula = duracaoAula;
-		this.horaInicio = LocalTime.parse(horaInicio);
-//		this.horaTermino = LocalTime.parse(horaTermino);
+		this.horaInicio = horaInicio;
+		this.diasDaSemana = set;
 		this.instituicao = instituicao;
 	}
 }
