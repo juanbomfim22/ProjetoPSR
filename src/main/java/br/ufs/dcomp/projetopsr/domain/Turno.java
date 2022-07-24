@@ -77,7 +77,7 @@ public class Turno implements Serializable {
 	private List<Grade> grades = new ArrayList<>();
 	
 	public Turno(Integer id, String nome, Integer qtdAulasDia,  Integer duracaoAula, LocalTime horaInicio, 
-			EnumSet<DiaDaSemana> set, 
+			Set<DiaDaSemana> set, 
 			Instituicao instituicao
 			) {
 		this.id = id;
@@ -85,7 +85,7 @@ public class Turno implements Serializable {
 		this.qtdAulasDia = qtdAulasDia;
 		this.duracaoAula = duracaoAula;
 		this.horaInicio = horaInicio;
-		this.diasDaSemana = set;
+		this.diasDaSemana = (set != null && set.size() > 0) ? EnumSet.copyOf(set) : EnumSet.noneOf(DiaDaSemana.class);
 		this.instituicao = instituicao;
 	}
 }

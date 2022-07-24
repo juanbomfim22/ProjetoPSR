@@ -17,11 +17,13 @@ import org.springframework.stereotype.Service;
 import br.ufs.dcomp.projetopsr.domain.Disciplina;
 import br.ufs.dcomp.projetopsr.domain.Docente;
 import br.ufs.dcomp.projetopsr.domain.Restricao;
+import br.ufs.dcomp.projetopsr.domain.Turno;
 import br.ufs.dcomp.projetopsr.domain.enums.DiaDaSemana;
 import br.ufs.dcomp.projetopsr.dto.DocenteDTO;
 import br.ufs.dcomp.projetopsr.repositories.DisciplinaRepository;
 import br.ufs.dcomp.projetopsr.repositories.DocenteRepository;
 import br.ufs.dcomp.projetopsr.repositories.RestricaoRepository;
+import br.ufs.dcomp.projetopsr.repositories.TurnoRepository;
 import br.ufs.dcomp.projetopsr.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -35,6 +37,9 @@ public class DocenteService {
 	
 	@Autowired
 	private RestricaoRepository restricaoRepo;
+	
+	@Autowired
+	private TurnoRepository turnoRepo;
 	 
 	
 	private void myForEach(List<Disciplina> ls, Docente t, boolean clear) {
@@ -123,12 +128,25 @@ public class DocenteService {
 		myForEach(discs, d, false);
 	}
 	
+	public Docente fromDTO(DocenteDTO d, Turno t) {
+		
+		
+		Docente doc = new Docente();
+				
+		doc.setRestricao(d.getRestricao());
+
+//		d.getRestricao().setRestricoesDeHorario(d.getRestricao().getRestricoesDeHorario());
+		doc.setMatricula(d.getMatricula());
+		doc.setNome(d.getNome());
+		doc.setTurno(t);
+		return doc;
+	}
+	
 	public Docente fromDTO (DocenteDTO d, Integer id) {
 		Docente doc = buscar(id);
 		doc.setNome(d.getNome());
 		doc.getRestricao().setRestricoesDeHorario(d.getRestricao().getRestricoesDeHorario());
 		return doc;
-//		return null;
 	}
 	
 	public Docente inserir(Docente obj) {

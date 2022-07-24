@@ -25,6 +25,9 @@ public class DocenteDTO implements Serializable {
 
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private Integer id;
+	
+	@Length(min=12, max=12, message="A matricula deve ter 12 dígitos, ex: 201900012345")
+	private String matricula;
 
 	@NotEmpty(message = "Preenchimento obrigatório")
 	@Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 120 caracteres")
@@ -41,6 +44,7 @@ public class DocenteDTO implements Serializable {
 		this.nome = x.getNome();
 		this.turnoId = x.getTurno() != null ? x.getTurno().getId() : null; 
 		this.restricao = x.getRestricao();
+		this.matricula = x.getMatricula();
 	}
 		
 }

@@ -1,7 +1,6 @@
 package br.ufs.dcomp.projetopsr.services;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +18,8 @@ import br.ufs.dcomp.projetopsr.dto.TurnoDTO;
 import br.ufs.dcomp.projetopsr.repositories.DocenteRepository;
 import br.ufs.dcomp.projetopsr.repositories.GradeRepository;
 import br.ufs.dcomp.projetopsr.repositories.TurnoRepository;
+import br.ufs.dcomp.projetopsr.security.UserPrincipal;
+import br.ufs.dcomp.projetopsr.services.exceptions.AuthorizationException;
 import br.ufs.dcomp.projetopsr.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -106,7 +107,7 @@ public class TurnoService {
 	// INSERT
 	public Turno fromDTO(TurnoDTO dto) {
 		Turno t = new Turno(null, dto.getNome(), dto.getQtdAulasDia(), dto.getDuracaoAula(), dto.getHoraInicio(),
-				EnumSet.copyOf(dto.getDiasDaSemana()), null);
+				dto.getDiasDaSemana(), null);
 		return t;
 	}
 
@@ -126,5 +127,11 @@ public class TurnoService {
 //				obj.getInstituicao()); // atualiza tudo menos a instituicao
 ////		
 //		return repo.save(res);
+	}
+	
+	public Turno isFromUser(Integer turnoId, UserPrincipal user) {
+		Optional<Turno> t = repo.findTurnoByUsuarioId(turnoId, user.getId());
+		return t.orElseThrow(() -> new AuthorizationException(
+				"Este ID não pertence a um turno da sua conta!"));
 	}
 }

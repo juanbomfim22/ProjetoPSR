@@ -18,11 +18,14 @@ public class TimeBox extends Variable {
 		super(name); 
 		
 		if(name.equals("---")) return;
-		if(!name.matches("\\d+")) {
-			throw new IllegalArgumentException();
-		}
 		this.setDia(dia);
-		this.time = Integer.parseInt(name);
+		this.time = Integer.parseInt(name.split(",")[0]);
 	}
+    
+    @Override
+    public String toString() {
+		return "("+ this.time + "," + this.dia +")";
+    	
+    }
  
 }

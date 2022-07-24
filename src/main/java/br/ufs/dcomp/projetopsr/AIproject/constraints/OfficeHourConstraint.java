@@ -5,7 +5,6 @@ import java.util.List;
 
 import aima.core.search.csp.Assignment;
 import aima.core.search.csp.Constraint;
-import br.ufs.dcomp.projetopsr.AIproject.variables.StaffMember;
 import br.ufs.dcomp.projetopsr.AIproject.variables.TimeBox;
 import br.ufs.dcomp.projetopsr.AIproject.variables.WorkingGroup;
 
@@ -29,7 +28,7 @@ public class OfficeHourConstraint<VAR extends TimeBox, VAL extends WorkingGroup>
 	public boolean isSatisfiedWith(Assignment<VAR, VAL> assignment) {
 		VAR timeBox = getScope().get(0);
 		VAL group = assignment.getValue(timeBox);
-		if (group.getMembers().isEmpty()) return true;
+		if (group.getDocentes().isEmpty()) return true;
 
 		return (startTime <= timeBox.getTime() && timeBox.getTime() <= endTime);
  

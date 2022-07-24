@@ -2,7 +2,10 @@ package br.ufs.dcomp.projetopsr.dto;
 
 import java.io.Serializable;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.FetchType;
@@ -33,6 +36,9 @@ public class TurnoDTO implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private Integer id;
 	
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private Integer instituicaoId;
+	
 	@NotEmpty(message = "Preenchimento obrigatório")
 	@Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 120 caracteres")
 	private String nome;
@@ -56,6 +62,9 @@ public class TurnoDTO implements Serializable {
 	@ElementCollection(fetch= FetchType.EAGER)
 	private Set<DiaDaSemana> diasDaSemana;
 
+	private List<DocenteDTO> docentes = new ArrayList<>();
+
+
 	public TurnoDTO(Turno x) {
 		this.id = x.getId();
 		this.nome = x.getNome();
@@ -63,5 +72,7 @@ public class TurnoDTO implements Serializable {
 		this.duracaoAula = x.getDuracaoAula();
 		this.horaInicio = x.getHoraInicio();
 		this.diasDaSemana = x.getDiasDaSemana();
+		this.instituicaoId = x.getInstituicao() != null ? x.getInstituicao().getId() : null;
+		this.docentes = x.getDocentes().stream().map(DocenteDTO::new).collect(Collectors.toList());
 	}
 }

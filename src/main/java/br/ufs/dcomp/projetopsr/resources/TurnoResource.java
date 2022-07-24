@@ -44,7 +44,7 @@ public class TurnoResource {
 	@GetMapping("/{id}")
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 		Turno obj = service.buscar(id);
-		return ResponseEntity.ok(obj);
+		return ResponseEntity.ok(new TurnoDTO(obj));
 	}
 	
 	@PostMapping

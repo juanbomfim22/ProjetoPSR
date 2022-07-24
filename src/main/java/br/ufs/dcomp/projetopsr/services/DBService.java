@@ -71,9 +71,9 @@ public class DBService {
 		
 		Curso c1 = new Curso(null,"Engenharia de Computacao", CursoSigla.EC, 6, i1);
 		
-		Turno t1 = new Turno(null, "manha",4, 50, LocalTime.parse("11:00"), EnumSet.of(DiaDaSemana.TERCA, DiaDaSemana.SEXTA), null);
+		Turno t1 = new Turno(null, "manha",4, 50, LocalTime.parse("11:00"), EnumSet.of(DiaDaSemana.TERCA, DiaDaSemana.SEXTA), i1);
 		Turno t2 = new Turno(null, "tarde",4, 50,  LocalTime.parse("11:00"),null, null);
-		Turno t3 = new Turno(null, "noite", 4, 50,  LocalTime.parse("11:00"),null,null);
+		Turno t3 = new Turno(null, "noite", 4, 50,  LocalTime.parse("11:00"),null,i1);
 		
 
 		
