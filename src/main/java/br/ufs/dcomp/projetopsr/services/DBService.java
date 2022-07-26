@@ -66,16 +66,17 @@ public class DBService {
 		Usuario u1 = new Usuario(null, "juan", "juanbomfim21@gmail.com", null, null, be.encode("123"));
 		Usuario u2 = new Usuario(null, "juan", "juan@teste2.com", null, null, be.encode("123"));
 		Usuario u3 = new Usuario(null, "juan", "juan@teste3.com", null, null, be.encode("123"));
-		
-		Instituicao i1 = new Instituicao(null, "Univ", "UFS", "222", u1); 
-		
-		Curso c1 = new Curso(null,"Engenharia de Computacao", CursoSigla.EC, 6, i1);
-		
-		Turno t1 = new Turno(null, "manha",4, 50, LocalTime.parse("11:00"), EnumSet.of(DiaDaSemana.TERCA, DiaDaSemana.SEXTA), i1);
-		Turno t2 = new Turno(null, "tarde",4, 50,  LocalTime.parse("11:00"),null, null);
-		Turno t3 = new Turno(null, "noite", 4, 50,  LocalTime.parse("11:00"),null,i1);
-		
+		Usuario u4 = new Usuario(null, "lizard", "lizard@example.com", null, null, be.encode("lizard123"));
 
+		Instituicao i1 = new Instituicao(null, "Univ", "UFS", "222", u1); 
+		Instituicao i2 = new Instituicao(null, "Univ", "UFS", "222", u4); 
+
+		Curso c1 = new Curso(null,"Engenharia de Computacao", CursoSigla.EC, 6, i1);
+		Curso c2 = new Curso(null,"Engenharia de Comportamento", CursoSigla.EC, 6, i2);
+
+		Turno t1 = new Turno(null, "0 - Manha",4, 50, LocalTime.parse("11:00"), EnumSet.of(DiaDaSemana.TERCA, DiaDaSemana.SEXTA), i1);
+		Turno t2 = new Turno(null, "1 - Tarde",4, 50,  LocalTime.parse("11:00"),null, i2);
+		Turno t3 = new Turno(null, "2 - Noite", 4, 50,  LocalTime.parse("11:00"),null,i1);
 		
 		Docente doc1 = new Docente(null, "Carlos", t1);
 		Docente doc2 = new Docente(null, "Tarcisio", t2);
@@ -86,17 +87,17 @@ public class DBService {
 		Restricao r1a = new Restricao(null, doc1);
 		Restricao r2a = new Restricao(null, doc2); 
 
-		Disciplina d1 = new Disciplina(null, "Inteligencia Artificial", "IA", 4, doc1);
-		Disciplina d2 = new Disciplina(null, "Eng Software", "ES", 8, doc2);
-		Disciplina d3 = new Disciplina(null, "Programacao Paralela", "PP", 4, doc2); 
+		Disciplina d1 = new Disciplina(null, "0000 - Inteligencia Artificial", "IA", 4, doc1);
+		Disciplina d2 = new Disciplina(null, "0001 - Eng Software", "ES", 8, doc2);
+		Disciplina d3 = new Disciplina(null, "0002 - Programacao Paralela", "PP", 4, doc2); 
 
 		
 		
 //		 Deve repetir o saveAll e usar o flush, se nao dá erro Transactional ...
-		usuarioRepository.saveAll(Arrays.asList(u1,u2,u3));
-		instituicaoRepository.saveAll(Arrays.asList(i1));
+		usuarioRepository.saveAll(Arrays.asList(u1,u2,u3,u4));
+		instituicaoRepository.saveAll(Arrays.asList(i1,i2));
 		turnoRepository.saveAll(Arrays.asList(t1, t2, t3));
-		cursoRepository.saveAll(Arrays.asList(c1));
+		cursoRepository.saveAll(Arrays.asList(c1,c2));
 		restricaoRepository.saveAll(Arrays.asList(r1a, r2a));
 		docenteRepository.saveAll(Arrays.asList(doc1, doc2, doc3, doc4));
 		disciplinaRepository.saveAll(Arrays.asList(d1, d2, d3));
@@ -112,7 +113,7 @@ public class DBService {
 		
 		c1.getDisciplinas().addAll(Arrays.asList(d1, d2, d3));
 
-		d1.getCursos().addAll(Arrays.asList(c1));
+		d1.getCursos().addAll(Arrays.asList(c1,c2));
 		d2.getCursos().addAll(Arrays.asList(c1));
 		d3.getCursos().addAll(Arrays.asList(c1));
 		
@@ -132,7 +133,7 @@ public class DBService {
 //		doc1.getRestricao().setPreferencias(Arrays.asList(d2, d3));
 //		doc2.getRestricao().setRestricoesDeHorario(a);
 
-		cursoRepository.saveAll(Arrays.asList(c1));
+		cursoRepository.saveAll(Arrays.asList(c1, c2));
 		docenteRepository.saveAll(Arrays.asList(doc1, doc2));
 		disciplinaRepository.saveAll(Arrays.asList(d1, d2, d3));
 		restricaoRepository.saveAll(Arrays.asList(r1a, r2a));

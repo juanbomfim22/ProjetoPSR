@@ -32,8 +32,6 @@ public class CursoDTO implements Serializable {
     @NotNull(message="Deve ter um valor")
 	private Integer periodo;
 	
-	@NotEmpty(message = "Preenchimento obrigatório")
-	private String instituicaoDeEnsino;
 	
 	
 	public CursoDTO(Curso x) {

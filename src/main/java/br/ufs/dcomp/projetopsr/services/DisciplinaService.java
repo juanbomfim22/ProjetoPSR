@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import br.ufs.dcomp.projetopsr.domain.Disciplina;
 import br.ufs.dcomp.projetopsr.dto.DisciplinaDTO;
+import br.ufs.dcomp.projetopsr.repositories.CursoRepository;
 import br.ufs.dcomp.projetopsr.repositories.DisciplinaRepository;
 import br.ufs.dcomp.projetopsr.services.exceptions.ObjectNotFoundException;
 
@@ -19,10 +20,18 @@ public class DisciplinaService {
 	
 	@Autowired
 	private DisciplinaRepository repo;
-	 
+	
+	@Autowired
+	private CursoRepository cursoRepo;
+	
 	public void delete(Integer id) {
-		buscar(id);
+		Disciplina d = buscar(id);
 		try {
+			d.getCursos().stream().forEach(x -> {
+				x.getDisciplinas().remove(d);
+				cursoRepo.save(x);
+			});
+			 
 			repo.deleteById(id);			
 		} catch(DataIntegrityViolationException e) {
 			throw new DataIntegrityViolationException("Não é possível excluir a disciplina");
