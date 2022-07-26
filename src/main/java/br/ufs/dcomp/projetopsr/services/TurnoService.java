@@ -12,11 +12,14 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.ufs.dcomp.projetopsr.domain.Docente;
+import br.ufs.dcomp.projetopsr.domain.Instituicao;
 import br.ufs.dcomp.projetopsr.domain.Turno;
 import br.ufs.dcomp.projetopsr.domain.Usuario;
 import br.ufs.dcomp.projetopsr.dto.TurnoDTO;
+import br.ufs.dcomp.projetopsr.repositories.DisciplinaRepository;
 import br.ufs.dcomp.projetopsr.repositories.DocenteRepository;
 import br.ufs.dcomp.projetopsr.repositories.GradeRepository;
+import br.ufs.dcomp.projetopsr.repositories.InstituicaoRepository;
 import br.ufs.dcomp.projetopsr.repositories.TurnoRepository;
 import br.ufs.dcomp.projetopsr.security.UserPrincipal;
 import br.ufs.dcomp.projetopsr.services.exceptions.AuthorizationException;
@@ -33,7 +36,13 @@ public class TurnoService {
 
 	@Autowired
 	private DocenteRepository docenteRepo;
+	
+	@Autowired
+	private DisciplinaRepository disciplinaRepo;
 
+	@Autowired
+	private InstituicaoRepository instituicaoRepo;
+	
 	public void delete(Integer id) {
 		Turno t = buscar(id);
 		myForEach(t.getDocentes(), null, true);
@@ -71,10 +80,20 @@ public class TurnoService {
 			docenteRepo.save(x);
 		});
 	}
+	
+	public Turno inserirBulk(String[] docenteIds, Turno t) {
+		t = inserir(t);
+		myForEach(eachDoc(docenteIds), t, false);
+		return t;
+	}
 
-	public void updateBulk(String[] docenteIds, Integer turnoId) {
+	public List<Docente> eachDoc(String[] docenteIds) {
+		
 		List<Docente> docs = new ArrayList<Docente>();
 		List<Integer> repeated = new ArrayList<Integer>();
+		
+		if(docenteIds == null) return docs;
+		
 		for (String id : docenteIds) {
 			Integer x;
 			try {
@@ -85,25 +104,37 @@ public class TurnoService {
 
 			if (!repeated.contains(x)) {
 				Docente doc = docenteRepo.findById(x).orElseThrow(() -> new ObjectNotFoundException(
-						"Turno não encontrado! Id: " + id + ", Tipo: " + Turno.class.getName()));
+						"Docente não encontrado! Id: " + id + ", Tipo: " + Docente.class.getName()));
 				docs.add(doc);
 			}
 
 			repeated.add(x);
 		}
+		return docs;
+	}
+	public void updateBulk(String[] docenteIds, Integer turnoId) {
+		
 		Turno t = buscar(turnoId);
 		myForEach(t.getDocentes(), null, true);
-		myForEach(docs, t, false);
+		myForEach(eachDoc(docenteIds), t, false);
 	}
 
+	public Turno fromDTOInst(TurnoDTO dto, Integer instId) {
+		Instituicao i = instituicaoRepo.findById(instId).orElseThrow(() -> new ObjectNotFoundException(
+				"Instituicao não encontrada! Id: " + instId + ", Tipo: " + Instituicao.class.getName()));
+		Turno t = fromDTO(dto);
+		t.setInstituicao(i);
+		return t;
+	}
+	
 	// UPDATE
 	public Turno fromDTO(TurnoDTO dto, Integer id) {
 		buscar(id);
 		return fromDTO(dto);
-
-//		return tmp;
 	}
 
+	
+	
 	// INSERT
 	public Turno fromDTO(TurnoDTO dto) {
 		Turno t = new Turno(null, dto.getNome(), dto.getQtdAulasDia(), dto.getDuracaoAula(), dto.getHoraInicio(),

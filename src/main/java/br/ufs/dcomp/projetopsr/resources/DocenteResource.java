@@ -50,7 +50,10 @@ public class DocenteResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> inserir(@RequestBody @Validated DocenteDTO d, @RequestParam(name="turnoId") Integer turnoId, Authentication auth) {
+	public ResponseEntity<?> inserir(@RequestBody @Validated DocenteDTO d,
+			@RequestParam(name="turnoId") Integer turnoId, 
+			@RequestParam(value = "disciplinaIds", required=false) String[] param,
+			Authentication auth) {
 		Turno t = null;
 		if(auth != null) {
 			t = turnoService.isFromUser(turnoId, (UserPrincipal) auth.getPrincipal());
@@ -60,16 +63,18 @@ public class DocenteResource {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> update(@RequestBody @Validated DocenteDTO d, @PathVariable Integer id) {
-		Docente obj = service.update(service.fromDTO(d, id), id); 
-		return ResponseEntity.noContent().build();
-	}
-	
-	@PutMapping("/{id}/disciplinas")
-	public ResponseEntity<Void> updateDisciplinas(@PathVariable Integer id, @RequestParam(value = "ids") String[] params) {
+	public ResponseEntity<Void> update(@RequestBody @Validated DocenteDTO d, 
+			@PathVariable Integer id, @RequestParam(value = "disciplinaIds", required=false) String[] params) {
 		service.updateBulk(params, id); 
 		return ResponseEntity.noContent().build();
 	}
+	
+//	@PutMapping("/{id}/disciplinas")
+//	public ResponseEntity<Void> updateDisciplinas(@PathVariable Integer id, 
+//			@RequestParam(value = "disciplinaIds") String[] params) {
+//		service.updateBulk(params, id); 
+//		return ResponseEntity.noContent().build();
+//	}
 	
 	
 	@DeleteMapping("/{id}")

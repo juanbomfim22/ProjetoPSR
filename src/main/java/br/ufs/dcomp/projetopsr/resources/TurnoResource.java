@@ -48,25 +48,30 @@ public class TurnoResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> inserir(@RequestBody @Validated TurnoDTO obj){
-		Turno t = service.fromDTO(obj);
-		t = service.inserir(t);
+	public ResponseEntity<Void> inserir(@RequestBody @Validated TurnoDTO obj, 
+			@RequestParam(value = "docenteIds", required=false) String[] params,
+			@RequestParam(value = "instituicaoId") Integer instituicaoId){
+		Turno t = service.fromDTOInst(obj, instituicaoId);
+		t = service.inserirBulk(params,t);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(t.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@PutMapping("/{id}/docentes")
-	public ResponseEntity<Void> updateDocentes(@PathVariable Integer id, @RequestParam(value = "ids") String[] params){
-		service.updateBulk(params, id);
-		return ResponseEntity.noContent().build(); 
-	}
+//	@PutMapping("/{id}/docentes")
+//	public ResponseEntity<Void> updateDocentes(@PathVariable Integer id, 
+//			@RequestParam(value = "docenteIds", required=false) String[] params){
+//		service.updateBulk(params, id);
+//		return ResponseEntity.noContent().build(); 
+//	}
 	
 	@PutMapping("/{id}") 
-	public ResponseEntity<Void> update(@RequestBody @Validated TurnoDTO objDto, @PathVariable Integer id) {
+	public ResponseEntity<Void> update(@RequestBody @Validated TurnoDTO objDto, 
+			@PathVariable Integer id,
+			@RequestParam(value = "docenteIds", required=false) String[] params) {
 		Turno obj = service.fromDTO(objDto, id);
 		obj.setId(id);
-		obj = service.update(obj, id);
+		service.updateBulk(params, id);
 		return ResponseEntity.noContent().build();
 	}
 

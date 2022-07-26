@@ -101,12 +101,15 @@ public class DocenteService {
 	public Docente buscar(Integer id) {
 		Optional<Docente> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"Objeto não encontrado! Id: " + id + ", Tipo: " + Docente.class.getName() ));
+				"Docente não encontrado! Id: " + id + ", Tipo: " + Docente.class.getName() ));
 	}
 	
-	public void updateBulk(String[] disciplinaIds, Integer docId) {
+	public List<Disciplina> eachDis(String[] disciplinaIds) {
 		List<Disciplina> discs = new ArrayList<Disciplina>();
 		List<Integer> repeated = new ArrayList<Integer>();
+		
+		if(disciplinaIds == null) return discs;
+		
 		for (String id : disciplinaIds) {
 			Integer x;
 			try {
@@ -117,15 +120,19 @@ public class DocenteService {
 
 			if(!repeated.contains(x)) {
 				Disciplina disc = disciplinaRepo.findById(x).orElseThrow(() -> new ObjectNotFoundException(
-						"Disicplina não encontrado! Id: " + id + ", Tipo: " + Disciplina.class.getName()));
+						"Disicplina não encontrada! Id: " + id + ", Tipo: " + Disciplina.class.getName()));
 				discs.add(disc);
 			}
 			
 			repeated.add(x);
 		}
+		return discs;
+	}
+	public void updateBulk(String[] disciplinaIds, Integer docId) {
+		
 		Docente d = buscar(docId);
 		myForEach(d.getDisciplinas(), null, true);
-		myForEach(discs, d, false);
+		myForEach(eachDis(disciplinaIds), d, false);
 	}
 	
 	public Docente fromDTO(DocenteDTO d, Turno t) {

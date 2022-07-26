@@ -35,7 +35,7 @@ public class TurnoDTO implements Serializable {
 	
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private Integer id;
-	
+//	
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private Integer instituicaoId;
 	

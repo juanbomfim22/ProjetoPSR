@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.client.HttpClientErrorException.Forbidden;
 
 import br.ufs.dcomp.projetopsr.services.exceptions.AuthorizationException;
 import br.ufs.dcomp.projetopsr.services.exceptions.DataIntegrityException;
@@ -38,7 +38,6 @@ public class ResourceExceptionHandler {
 		return ResponseEntity.status(status).body(err);
 	}
 
-	private Forbidden e;
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<StandardError> validation(MethodArgumentNotValidException e, HttpServletRequest request) {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
@@ -59,6 +58,17 @@ public class ResourceExceptionHandler {
 		StandardError err = new StandardError(status.value(), e.getMessage(), System.currentTimeMillis());
 	
 		return ResponseEntity.status(status).body(err);
+	}
+	
+	@ExceptionHandler(MissingServletRequestParameterException.class)
+	public ResponseEntity<StandardError> validation(MissingServletRequestParameterException e, HttpServletRequest request) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		ValidationError err = new ValidationError(status.value(), "Faltam parametros: "+e.getLocalizedMessage(), System.currentTimeMillis());
+		
+		 
+		
+		return ResponseEntity.status(status).body(err);
+
 	}
 	
 }
