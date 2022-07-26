@@ -65,7 +65,8 @@ public class DocenteResource {
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@RequestBody @Validated DocenteDTO d, 
 			@PathVariable Integer id, @RequestParam(value = "disciplinaIds", required=false) String[] params) {
-		service.updateBulk(params, id); 
+		Docente doc = service.fromDTO(d, id);
+		service.updateBulk(params, doc, id); 
 		return ResponseEntity.noContent().build();
 	}
 	

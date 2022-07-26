@@ -128,9 +128,9 @@ public class DocenteService {
 		}
 		return discs;
 	}
-	public void updateBulk(String[] disciplinaIds, Integer docId) {
+	public void updateBulk(String[] disciplinaIds, Docente obj, Integer docId) {
 		
-		Docente d = buscar(docId);
+		Docente d = update(obj, docId);
 		myForEach(d.getDisciplinas(), null, true);
 		myForEach(eachDis(disciplinaIds), d, false);
 	}
@@ -148,6 +148,7 @@ public class DocenteService {
 		doc.setTurno(t);
 		return doc;
 	}
+	 
 	
 	public Docente fromDTO (DocenteDTO d, Integer id) {
 		Docente doc = buscar(id);

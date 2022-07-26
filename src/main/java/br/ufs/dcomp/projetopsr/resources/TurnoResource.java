@@ -71,7 +71,7 @@ public class TurnoResource {
 			@RequestParam(value = "docenteIds", required=false) String[] params) {
 		Turno obj = service.fromDTO(objDto, id);
 		obj.setId(id);
-		service.updateBulk(params, id);
+		service.updateBulk(params, obj, id);
 		return ResponseEntity.noContent().build();
 	}
 

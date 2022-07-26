@@ -112,9 +112,9 @@ public class TurnoService {
 		}
 		return docs;
 	}
-	public void updateBulk(String[] docenteIds, Integer turnoId) {
+	public void updateBulk(String[] docenteIds, Turno obj, Integer turnoId) {
 		
-		Turno t = buscar(turnoId);
+		Turno t = update(obj, turnoId); 
 		myForEach(t.getDocentes(), null, true);
 		myForEach(eachDoc(docenteIds), t, false);
 	}
