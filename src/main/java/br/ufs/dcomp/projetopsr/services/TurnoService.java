@@ -1,6 +1,7 @@
 package br.ufs.dcomp.projetopsr.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,9 +74,9 @@ public class TurnoService {
 	private void myForEach(List<Docente> ls, Turno t, boolean clear) {
 		ls.forEach(x -> {
 			if (clear) {
-				x.setTurno(null);
+				x.setTurnos(null);
 			} else {
-				x.setTurno(t);
+				x.setTurnos(Arrays.asList(t));
 			}
 			docenteRepo.save(x);
 		});

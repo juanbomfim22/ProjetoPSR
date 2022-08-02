@@ -1,5 +1,7 @@
 package br.ufs.dcomp.projetopsr.resources;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -58,7 +60,7 @@ public class DocenteResource {
 		if(auth != null) {
 			t = turnoService.isFromUser(turnoId, (UserPrincipal) auth.getPrincipal());
 		}
-		Docente obj = service.inserir(service.fromDTO(d, t));
+		Docente obj = service.inserir(service.fromDTO(d, Arrays.asList(t)));
 		return ResponseEntity.ok(obj);
 	}
 	

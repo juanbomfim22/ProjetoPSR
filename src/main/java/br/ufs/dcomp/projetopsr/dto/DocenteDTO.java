@@ -1,6 +1,8 @@
 package br.ufs.dcomp.projetopsr.dto;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.MapsId;
 import javax.validation.constraints.NotEmpty;
@@ -34,7 +36,7 @@ public class DocenteDTO implements Serializable {
 	private String nome;
 
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private Integer turnoId;
+	private List<Integer> turnoIds;
 	
 	@MapsId
 	private Restricao restricao;
@@ -42,7 +44,7 @@ public class DocenteDTO implements Serializable {
 	public DocenteDTO(Docente x) {
 		this.id = x.getId();
 		this.nome = x.getNome();
-		this.turnoId = x.getTurno() != null ? x.getTurno().getId() : null; 
+		this.turnoIds = x.getTurnos() != null ? x.getTurnos().stream().map(k -> k.getId()).collect(Collectors.toList()) : null; 
 		this.restricao = x.getRestricao();
 		this.matricula = x.getMatricula();
 	}

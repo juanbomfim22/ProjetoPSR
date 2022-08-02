@@ -28,7 +28,7 @@ public class DisciplinaService {
 		Disciplina d = buscar(id);
 		try {
 			d.getCursos().stream().forEach(x -> {
-				x.getDisciplinas().remove(d);
+				x.getDisciplinasObrigatorias().remove(d);
 				cursoRepo.save(x);
 			});
 			 

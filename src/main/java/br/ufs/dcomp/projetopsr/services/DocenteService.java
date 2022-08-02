@@ -72,9 +72,9 @@ public class DocenteService {
 		}
 		
 		newObj.setNome(obj.getNome()); 
-		newObj.setDisciplinas(obj.getDisciplinas());
+		newObj.setPreferencias(obj.getPreferencias());
 		newObj.setNome(obj.getNome());
-		newObj.setTurno(obj.getTurno());
+		newObj.setTurnos(obj.getTurnos());
 
 //	 	newObj.getRestricao().setRestricoesDeHorario(obj.getRestricao().getRestricoesDeHorario());
  
@@ -84,7 +84,7 @@ public class DocenteService {
 	
 	public void delete(Integer id) {
 		Docente d = buscar(id);
-		myForEach(d.getDisciplinas(), null ,true);
+		myForEach(d.getPreferencias(), null ,true);
 		try {
 			repo.deleteById(id);			
 		} catch(DataIntegrityViolationException e) {
@@ -131,11 +131,11 @@ public class DocenteService {
 	public void updateBulk(String[] disciplinaIds, Docente obj, Integer docId) {
 		
 		Docente d = update(obj, docId);
-		myForEach(d.getDisciplinas(), null, true);
+		myForEach(d.getPreferencias(), null, true);
 		myForEach(eachDis(disciplinaIds), d, false);
 	}
 	
-	public Docente fromDTO(DocenteDTO d, Turno t) {
+	public Docente fromDTO(DocenteDTO d, List<Turno> t) {
 		
 		
 		Docente doc = new Docente();
@@ -145,7 +145,7 @@ public class DocenteService {
 //		d.getRestricao().setRestricoesDeHorario(d.getRestricao().getRestricoesDeHorario());
 		doc.setMatricula(d.getMatricula());
 		doc.setNome(d.getNome());
-		doc.setTurno(t);
+		doc.setTurnos(t);
 		return doc;
 	}
 	 

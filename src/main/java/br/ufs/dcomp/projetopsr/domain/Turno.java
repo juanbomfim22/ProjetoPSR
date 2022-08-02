@@ -7,6 +7,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
@@ -69,11 +71,12 @@ public class Turno implements Serializable {
 	@JoinColumn(name = "instituicao_id")
 	private Instituicao instituicao;
 
-	@OneToMany(mappedBy= "turno")
+	@JsonIgnore
+	@ManyToMany(mappedBy= "turnos", cascade = CascadeType.ALL)
 	private List<Docente> docentes = new ArrayList<>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy= "turno")
+	@OneToMany(mappedBy= "turno", cascade = CascadeType.PERSIST)
 	private List<Grade> grades = new ArrayList<>();
 	
 	public Turno(Integer id, String nome, Integer qtdAulasDia,  Integer duracaoAula, LocalTime horaInicio, 

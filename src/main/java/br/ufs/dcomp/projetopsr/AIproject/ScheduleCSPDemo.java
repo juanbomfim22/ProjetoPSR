@@ -8,17 +8,17 @@ import aima.core.search.csp.CspListener;
 import aima.core.search.csp.CspSolver;
 import aima.core.search.csp.MinConflictsSolver;
 import br.ufs.dcomp.projetopsr.AIproject.csp.ScheduleCSP;
-import br.ufs.dcomp.projetopsr.AIproject.variables.TimeBox;
-import br.ufs.dcomp.projetopsr.AIproject.variables.WorkingGroup;
+import br.ufs.dcomp.projetopsr.AIproject.variables.HorarioVariable;
+import br.ufs.dcomp.projetopsr.AIproject.variables.TurmaVariable;
  
 public class ScheduleCSPDemo {
 	
-//	public static void PrintSolutionAssignmentTable(Optional<Assignment<TimeBox, WorkingGroup>> solution, CSP<TimeBox, WorkingGroup> csp) {
+//	public static void PrintSolutionAssignmentTable(Optional<Assignment<HorarioVariable, TurmaVariable>> solution, CSP<HorarioVariable, TurmaVariable> csp) {
 //		assignment = solution.get();
-//		List<TimeBox> variables = csp.getVariables();
+//		List<HorarioVariable> variables = csp.getVariables();
 //		
 //		List<StaffMember> members = new ArrayList<>();
-//		for(WorkingGroup value: csp.getDomain(variables.get(0)))
+//		for(TurmaVariable value: csp.getDomain(variables.get(0)))
 //			if(value.getMembers().size() == 1)
 //				members.add(value.getMembers().get(0));
 //		
@@ -31,7 +31,7 @@ public class ScheduleCSPDemo {
 //				}
 //				System.out.printf(":");
 //				for(int i=0; i<24; i++){
-//					WorkingGroup value = assignment.getValue(variables.get(i));
+//					TurmaVariable value = assignment.getValue(variables.get(i));
 //					if(value.getMembers().contains(p)) {
 //						System.out.printf("  %d", 1);
 //					}else {
@@ -43,19 +43,19 @@ public class ScheduleCSPDemo {
 //		}
 //	}
 	
-	public static Assignment<TimeBox, WorkingGroup> assignment = new Assignment<TimeBox, WorkingGroup>();
+	public static Assignment<HorarioVariable, TurmaVariable> assignment = new Assignment<HorarioVariable, TurmaVariable>();
 	
 	public static void main(String[] args) { 
-		CSP<TimeBox, WorkingGroup> csp = new ScheduleCSP();
+		CSP<HorarioVariable, TurmaVariable> csp = new ScheduleCSP();
 
-		CspListener.StepCounter<TimeBox, WorkingGroup> stepCounter = new CspListener.StepCounter<>();
+		CspListener.StepCounter<HorarioVariable, TurmaVariable> stepCounter = new CspListener.StepCounter<>();
 
-		CspSolver<TimeBox, WorkingGroup> solver;
+		CspSolver<HorarioVariable, TurmaVariable> solver;
 
-		Optional<Assignment<TimeBox, WorkingGroup>> solution;
+		Optional<Assignment<HorarioVariable, TurmaVariable>> solution;
 
 		solver = new MinConflictsSolver<>(100000);
-//		solver = new FlexibleBacktrackingSolver<TimeBox, WorkingGroup>().setAll();
+//		solver = new FlexibleBacktrackingSolver<HorarioVariable, TurmaVariable>().setAll();
 		
 		solver.addCspListener(stepCounter);
 
@@ -67,7 +67,7 @@ public class ScheduleCSPDemo {
 		
 		 
 		
-		solution.ifPresent(x -> (new TableList()).printResults(x));
+		solution.ifPresent(x -> (new TableList<HorarioVariable, TurmaVariable>()).printResults(x));
 
 //		solution.ifPresent(System.out::println);
 //		solution.ifPresent(System.out::println);

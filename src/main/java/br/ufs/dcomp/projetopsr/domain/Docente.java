@@ -12,11 +12,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.validation.constraints.NotEmpty;
 
 import br.ufs.dcomp.projetopsr.domain.enums.DiaDaSemana;
 import lombok.AllArgsConstructor;
@@ -36,14 +36,20 @@ public class Docente implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
+	@NotEmpty
 	private String nome;
 	
+	@NotEmpty
 	private String matricula;
+
 	
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "turno_id")
-	private Turno turno;
+//	@JsonIgnore
+	@NotEmpty
+	@ManyToMany
+	@JoinTable(name= "TURNO_DOCENTE",
+	joinColumns = @JoinColumn(name= "curso_id"),
+	inverseJoinColumns = @JoinColumn(name= "disciplina_id"))
+	private List<Turno> turnos;
 	 
 	@OneToOne(mappedBy="docente", cascade = CascadeType.ALL)
 	private Restricao restricao; 
@@ -52,13 +58,12 @@ public class Docente implements Serializable {
 //	@ManyToMany(mappedBy="docentes")
 //	private List<Grade> grades = new ArrayList<>();
 
-	@OneToMany(mappedBy="docente", cascade = CascadeType.MERGE)
-	private List<Disciplina> disciplinas = new ArrayList<>();
+	@OneToMany(mappedBy="docente", cascade = CascadeType.ALL)
+	private List<Disciplina> preferencias = new ArrayList<>();
 	 
-	public Docente(Integer id, String nome, Turno turno) {
+	public Docente(Integer id, String nome) {
 		this.id = id;
-		this.nome = nome;
-		this.turno = turno;
+		this.nome = nome; 
 	}
 
 	@Override

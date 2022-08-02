@@ -10,11 +10,11 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
-public class TimeBox extends Variable { 
+public class HorarioVariable extends Variable { 
 	private Integer time;
 	private DiaDaSemana dia;
 	
-    public TimeBox(String name, DiaDaSemana dia) {
+    public HorarioVariable(String name, DiaDaSemana dia) {
 		super(name); 
 		
 		if(name.equals("---")) return;

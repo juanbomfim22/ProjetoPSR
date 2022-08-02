@@ -39,14 +39,12 @@ public class Restricao implements Serializable {
 	@Convert(attributeName = "key",converter = DiaDaSemanaConverter.class)
 	private Map<DiaDaSemana, String> restricoesDeHorario = new HashMap<>();
 	
+	private Integer creditosLecionados;
 	
-//	@OneToMany(mappedBy = "restricao")
-//	private List<Disciplina> preferencias = new ArrayList<>();
- 
 	@JsonIgnore  
 	@OneToOne
 	@JoinColumn(name="docente_id")
-    @MapsId 
+    @MapsId
 	private Docente docente;
 	
 	public Restricao() {

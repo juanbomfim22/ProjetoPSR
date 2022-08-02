@@ -83,7 +83,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     	}
     	
     	Usuario user = new Usuario(
-    			null, nome, email, info.getImagemPerfil(), info.getId(), null
+    			null, nome, email, info.getImagemPerfil(), info.getId(), null, null
     	);    
     	user.setProvider(getAuthProviderFrom(oAuth2UserRequest));
         return repo.save(user);

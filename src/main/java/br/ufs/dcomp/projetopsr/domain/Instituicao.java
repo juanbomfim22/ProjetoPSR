@@ -4,11 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -23,19 +24,30 @@ import lombok.NoArgsConstructor;
 public class Instituicao implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)	
+	@Id	
+	@Column(name="instituicao_id")
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	 
 	private String nome;
+	 
 	private String sigla;
+	
 	private String cnpj;
+
+	@JsonIgnore
+	@MapsId
+	@OneToOne
+	@JoinColumn(name = "usuario_id") 
+	private Usuario usuario;
 	
 	@JsonIgnore
-	@OneToOne
-	@JoinColumn(name = "usuario_id")
-	private Usuario usuario;
-	 
+	@OneToMany(mappedBy = "instituicao", cascade = CascadeType.ALL)
+	private List<Turno> turnos = new ArrayList<>(); 
+	
+	@OneToMany(mappedBy = "instituicao", cascade = CascadeType.ALL)
+	private List<Curso> cursos = new ArrayList<>();
+	
 	public Instituicao(Integer id, String nome, String sigla, String cnpj, Usuario usuario) {
 		super();
 		this.id = id;
@@ -45,13 +57,5 @@ public class Instituicao implements Serializable {
 		this.usuario = usuario;
 	}
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "instituicao")
-	private List<Turno> turnos = new ArrayList<>();
-	
-//	@OneToMany(mappedBy = "instituicao")
-//	private List<Docente> docentes =  new ArrayList<>();
-	
-	@OneToMany(mappedBy = "instituicao")
-	private List<Curso> cursos = new ArrayList<>();
+
 }

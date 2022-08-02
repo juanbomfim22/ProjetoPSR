@@ -5,7 +5,6 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +40,7 @@ public class UsuarioResource {
 	}
 
 	@GetMapping("/{id}")
-	@PreAuthorize("hasRole('CLIENTE') && #id == authentication.principal.id")
+//	@PreAuthorize("hasRole('CLIENTE') && #id == authentication.principal.id")
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 		Usuario obj = service.buscar(id);
 		return ResponseEntity.ok(obj);
@@ -60,7 +59,7 @@ public class UsuarioResource {
 	
 	// SE O ENDPOINT NAO TIVER CARREGANDO, OLHE NO SPRING SECURITY...
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+//	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id){
 		service.delete(id);

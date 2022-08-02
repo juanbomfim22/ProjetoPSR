@@ -17,7 +17,7 @@ public class MongoRepository {
 	
 	public MongoDatabase getMongoClient() {
 		try {
-			return MongoClients.create(uri).getDatabase(database);
+ 			return MongoClients.create(uri).getDatabase(database);
 		} catch (Exception e) {
 			
 		}

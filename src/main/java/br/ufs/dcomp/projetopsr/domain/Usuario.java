@@ -16,6 +16,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
@@ -56,8 +57,15 @@ public class Usuario implements Serializable {
 //	@JsonIgnore
 //	@OneToMany(mappedBy = "usuario")
 //	private List<Grade> grades = new ArrayList<>();
+ 
 	
+ 
+	
+	
+//	@OneToOne
+//	@JoinColumn(name = "instituicao_id") 
 	@OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JoinColumn(name="instituicao_id")
 	private Instituicao instituicao;
 
 	@ElementCollection(fetch = FetchType.EAGER)
@@ -67,13 +75,16 @@ public class Usuario implements Serializable {
 	public Usuario() {
 	}
 
-	public Usuario(Integer id, String nome, String email, String imagemPerfil, String providerId, String senha) {
+	public Usuario(Integer id, String nome, String email, String imagemPerfil, 
+			String providerId, String senha, Instituicao instituicao) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.imagemPerfil = imagemPerfil;
 		this.providerId = providerId;
+		this.instituicao = instituicao;
+		
 		this.senha = senha;
 		
 		setProvider(AuthProvider.LOCAL);

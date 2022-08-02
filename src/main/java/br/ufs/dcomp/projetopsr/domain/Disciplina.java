@@ -38,7 +38,8 @@ public class Disciplina implements Serializable {
 	private Docente docente;
 	 
 	
-	@ManyToMany(mappedBy="disciplinas")
+	@JsonIgnore
+	@ManyToMany(mappedBy="disciplinasObrigatorias")
 	private List<Curso> cursos = new ArrayList<>();
 	 
 //	@JsonIgnore

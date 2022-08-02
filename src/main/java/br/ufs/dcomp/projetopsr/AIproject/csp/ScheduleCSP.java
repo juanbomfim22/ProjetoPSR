@@ -19,8 +19,8 @@ import aima.core.search.csp.CSP;
 import aima.core.search.csp.Domain;
 import br.ufs.dcomp.projetopsr.AIproject.IO.InputCSP;
 import br.ufs.dcomp.projetopsr.AIproject.constraints.AulasConsecutivasConstraint;
-import br.ufs.dcomp.projetopsr.AIproject.variables.TimeBox;
-import br.ufs.dcomp.projetopsr.AIproject.variables.WorkingGroup;
+import br.ufs.dcomp.projetopsr.AIproject.variables.HorarioVariable;
+import br.ufs.dcomp.projetopsr.AIproject.variables.TurmaVariable;
 import br.ufs.dcomp.projetopsr.domain.Curso;
 import br.ufs.dcomp.projetopsr.domain.Disciplina;
 import br.ufs.dcomp.projetopsr.domain.Docente;
@@ -32,7 +32,7 @@ import br.ufs.dcomp.projetopsr.domain.enums.CursoSigla;
 import br.ufs.dcomp.projetopsr.domain.enums.DiaDaSemana;
 import lombok.Data;
 
-public class ScheduleCSP extends CSP<TimeBox, WorkingGroup> {
+public class ScheduleCSP extends CSP<HorarioVariable, TurmaVariable> {
 
 		// Deve estar na ordem!
 
@@ -55,7 +55,7 @@ public class ScheduleCSP extends CSP<TimeBox, WorkingGroup> {
 //	public static final List<Disciplina> people = Arrays.asList(d1, d2, d3);
 
 	/*
-	 * --- Construção do domínio: Cada TimeBox pode assumir um desses valores ---
+	 * --- Construção do domínio: Cada HorarioVariable pode assumir um desses valores ---
 	 * Gera as combinações de docente e disciplinas que estao presentes no turno
 	 * Exemplo:
 	 * Carlos: [IA, ED]
@@ -72,15 +72,15 @@ public class ScheduleCSP extends CSP<TimeBox, WorkingGroup> {
 //			.collect(Collectors.toMap(Docente::getNome, x -> x));
 
 	// Cria a grade preenchida 
-	public static List<TimeBox> variables = range(turno);
+	public static List<HorarioVariable> variables = range(turno);
 
 	//TODO: Em vez de Arrays.asList(doc1,doc2,..) é turno.getDocentes
 	// Em vez de Arryas.aslist(d1, d2, ..) é d.getDisciplinas
-//	public static final List<WorkingGroup> groups = 
+//	public static final List<TurmaVariable> groups = 
 	
 	// Gera todas as combinações de grupos de pessoas
-//	public static final List<WorkingGroup> groups = Generator.subset(people).simple().stream()
-//			.map(x -> new WorkingGroup("")).collect(Collectors.toList());
+//	public static final List<TurmaVariable> groups = Generator.subset(people).simple().stream()
+//			.map(x -> new TurmaVariable("")).collect(Collectors.toList());
 
 	/*
 	 * Alice, Bob, ... Alice Bob, Alice Charlie, ... Alice Bob Charlie, ...
@@ -93,38 +93,32 @@ public class ScheduleCSP extends CSP<TimeBox, WorkingGroup> {
 	 * | ----_ | ----- | ----- |
 	 *        ...
 	 */
-	public static List<TimeBox> range(Turno turnoLocal) {
+	public static List<HorarioVariable> range(Turno turnoLocal) {
 		
 		/* Quero gerar
- 		 * [TimeBox(time=1, dia=SEGUNDA), TimeBox(time=1, dia=QUARTA), TimeBox(time=1, dia=QUINTA), TimeBox(time=1, dia=SEXTA), 
- 		 *  TimeBox(time=2, dia=SEGUNDA), TimeBox(time=2, dia=QUARTA), TimeBox(time=2, dia=QUINTA), TimeBox(time=2, dia=SEXTA), 
- 		 *  TimeBox(time=3, dia=SEGUNDA), TimeBox(time=3, dia=QUARTA), TimeBox(time=3, dia=QUINTA), TimeBox(time=3, dia=SEXTA), 
- 		 *  TimeBox(time=4, dia=SEGUNDA), TimeBox(time=4, dia=QUARTA), TimeBox(time=4, dia=QUINTA), TimeBox(time=4, dia=SEXTA), 
- 		 *  TimeBox(time=5, dia=SEGUNDA), TimeBox(time=5, dia=QUARTA), TimeBox(time=5, dia=QUINTA), TimeBox(time=5, dia=SEXTA)]
+ 		 * [HorarioVariable(time=1, dia=SEGUNDA), HorarioVariable(time=1, dia=QUARTA), HorarioVariable(time=1, dia=QUINTA), HorarioVariable(time=1, dia=SEXTA), 
+ 		 *  HorarioVariable(time=2, dia=SEGUNDA), HorarioVariable(time=2, dia=QUARTA), HorarioVariable(time=2, dia=QUINTA), HorarioVariable(time=2, dia=SEXTA), 
+ 		 *  HorarioVariable(time=3, dia=SEGUNDA), HorarioVariable(time=3, dia=QUARTA), HorarioVariable(time=3, dia=QUINTA), HorarioVariable(time=3, dia=SEXTA), 
+ 		 *  HorarioVariable(time=4, dia=SEGUNDA), HorarioVariable(time=4, dia=QUARTA), HorarioVariable(time=4, dia=QUINTA), HorarioVariable(time=4, dia=SEXTA), 
+ 		 *  HorarioVariable(time=5, dia=SEGUNDA), HorarioVariable(time=5, dia=QUARTA), HorarioVariable(time=5, dia=QUINTA), HorarioVariable(time=5, dia=SEXTA)]
 		 */
 		List<Integer> range = IntStream.rangeClosed(1, turnoLocal.getQtdAulasDia()).boxed().collect(Collectors.toList());
 		List<Integer> dias = turnoLocal.getDiasDaSemana().stream().map(x -> x.getId()).collect(Collectors.toList());
 		
 		return Generator.cartesianProduct(range, dias).stream().map(x -> {
 			DiaDaSemana d = DiaDaSemana.toEnum(x.get(1));
-			return new TimeBox(x.get(0) + "," + d.getValor(), d);
+			return new HorarioVariable(x.get(0) + "," + d.getValor(), d);
 		}).collect(Collectors.toList());
-		
-//			.stream().map(t -> t.g
-//			;
-//		 
-//		return IntStream.rangeClosed(start, end).boxed()
-//				.map(x -> generate(x, turnoLocal.getQtdAulasDia(), turnoLocal.getDiasDaSemana()))
-//				.collect(Collectors.toList());
+	 
 	}
 
-	public static TimeBox generate(Integer x, Integer step, Set<DiaDaSemana> dias) {
+	public static HorarioVariable generate(Integer x, Integer step, Set<DiaDaSemana> dias) {
 		Integer diasCount = dias.size();
 		Integer count = 0;
 		for (int i = diasCount; i <= step * dias.size(); i += diasCount) {
 			if (x <= i) {
 				List<DiaDaSemana> ls = new ArrayList<>(dias);
-				TimeBox t = new TimeBox(x + "", ls.get(x - (count * diasCount) - 1));
+				HorarioVariable t = new HorarioVariable(x + "", ls.get(x - (count * diasCount) - 1));
 				return t;
 			}
 			count++;
@@ -137,7 +131,7 @@ public class ScheduleCSP extends CSP<TimeBox, WorkingGroup> {
 	@Data
 	public class GradeHoraria {
 		private Turno turno;
-		private Map<DiaDaSemana, Set<TimeBox>> dias = new HashMap<>();
+		private Map<DiaDaSemana, Set<HorarioVariable>> dias = new HashMap<>();
 
 		public GradeHoraria(Turno turno) {
 			this.turno = turno;
@@ -146,9 +140,9 @@ public class ScheduleCSP extends CSP<TimeBox, WorkingGroup> {
 
 		public void create() {
 			if (turno != null) {
-				List<TimeBox> boxes = range(turno);
+				List<HorarioVariable> boxes = range(turno);
 				for (DiaDaSemana dia : DiaDaSemana.values()) {
-					Set<TimeBox> coluna = new HashSet<>();
+					Set<HorarioVariable> coluna = new HashSet<>();
 					this.dias.put(dia, coluna);
 				}
 				boxes.stream().forEach(x -> {
@@ -162,9 +156,9 @@ public class ScheduleCSP extends CSP<TimeBox, WorkingGroup> {
 		super(variables);
 
 		// As variáveis  
-		 Usuario u1 = new Usuario(null, "juan", "juanbomfim21@gmail.com", null, null, ("123"));
-		 Usuario u2 = new Usuario(null, "juan", "juan@teste2.com", null, null, ("123"));
-		 Usuario u3 = new Usuario(null, "juan", "juan@teste3.com", null, null, ("123"));
+		 Usuario u1 = new Usuario(null, "juan", "juanbomfim21@gmail.com", null, null, ("123"), null);
+		 Usuario u2 = new Usuario(null, "juan", "juan@teste2.com", null, null, ("123"), null);
+		 Usuario u3 = new Usuario(null, "juan", "juan@teste3.com", null, null, ("123"), null);
 
 		 Instituicao i1 = new Instituicao(null, "Univ", "UFS", "222", u1);
 
@@ -176,10 +170,10 @@ public class ScheduleCSP extends CSP<TimeBox, WorkingGroup> {
 		 Turno t2 = new Turno(null, "tarde", 4, 50, LocalTime.parse("11:00"), null, null);
 		 Turno t3 = new Turno(null, "noite", 4, 50, LocalTime.parse("11:00"), null, null);
 
-		 Docente doc1 = new Docente(null, "Carlos", t1);
-		 Docente doc2 = new Docente(null, "Tarcisio", t2);
-		 Docente doc3 = new Docente(null, "Leila", t3);
-		 Docente doc4 = new Docente(null, "Beatriz", t1);
+		 Docente doc1 = new Docente(null, "Carlos");
+		 Docente doc2 = new Docente(null, "Tarcisio");
+		 Docente doc3 = new Docente(null, "Leila");
+		 Docente doc4 = new Docente(null, "Beatriz");
 		 
 		 
 		 Restricao r1a = new Restricao(null, doc1);
@@ -210,18 +204,18 @@ public class ScheduleCSP extends CSP<TimeBox, WorkingGroup> {
 		 t1.setDocentes(Arrays.asList(doc1, doc2, doc3, doc4));
 		
 
-		 List<WorkingGroup> groups = Stream.concat(t1.getDocentes().stream()
+		 List<TurmaVariable> groups = Stream.concat(t1.getDocentes().stream()
 					.flatMap(doc -> doc.getDisciplinas().stream()
-							.map(di -> new WorkingGroup(di, Arrays.asList(doc))))
-					, Arrays.asList(new WorkingGroup("")).stream()).collect(Collectors.toList());
+							.map(di -> new TurmaVariable(di, Arrays.asList(doc))))
+					, Arrays.asList(new TurmaVariable("")).stream()).collect(Collectors.toList());
 //		 
 
 		 // +1 para a entrada nula
 		
 		
-		Domain<WorkingGroup> domain = new Domain<>(groups);
+		Domain<TurmaVariable> domain = new Domain<>(groups);
 
-		for (TimeBox variable : getVariables()) {
+		for (HorarioVariable variable : getVariables()) {
 			setDomain(variable, domain);
 		}
 		
@@ -232,9 +226,9 @@ public class ScheduleCSP extends CSP<TimeBox, WorkingGroup> {
 			for(int i = 0; i < t1.getQtdAulasDia(); i++) {
 				for(int j = 0; j < scheduleSize; j+=s) {
 					if(i+j+s < scheduleSize) {
-						TimeBox tb1 = getVariables().get(i+j);
-						TimeBox tb2 = getVariables().get(i+j+s);
-						addConstraint(new AulasConsecutivasConstraint<TimeBox, WorkingGroup>(tb1, tb2));
+						HorarioVariable tb1 = getVariables().get(i+j);
+						HorarioVariable tb2 = getVariables().get(i+j+s);
+						addConstraint(new AulasConsecutivasConstraint<HorarioVariable, TurmaVariable>(tb1, tb2));
 					}
 				}
 		}
@@ -242,25 +236,25 @@ public class ScheduleCSP extends CSP<TimeBox, WorkingGroup> {
 //		for (DiaDaSemana dia : DiaDaSemana.values()) {
 //			if (this.gradeHoraria.getDias().get(dia).isEmpty())
 //				continue;
-//			Set<TimeBox> set = this.gradeHoraria.getDias().get(dia);
+//			Set<HorarioVariable> set = this.gradeHoraria.getDias().get(dia);
 //			Integer carga = 2;
-//			addConstraint(new AulasConsecutivasConstraint<TimeBox, WorkingGroup>(new ArrayList<>(set), carga));
+//			addConstraint(new ExatamenteMetadeDaCargaConstraint<HorarioVariable, TurmaVariable>(new ArrayList<>(set), carga));
 //		}
 
-		for (TimeBox variable : getVariables()) {
-//			addConstraint(new HorarioIndisponivelConstraint<TimeBox, WorkingGroup>(variable));
+		for (HorarioVariable variable : getVariables()) {
+//			addConstraint(new HorarioIndisponivelConstraint<HorarioVariable, TurmaVariable>(variable));
 
-//			addConstraint(new FreeWorkHoursConstraint<TimeBox, WorkingGroup>(variable));
-//			addConstraint(new AllowVaccinatedConstraint<TimeBox, WorkingGroup>(variable));
-//			addConstraint(new OfficeHourConstraint<TimeBox, WorkingGroup>(variable, startTime, endTime));
+//			addConstraint(new FreeWorkHoursConstraint<HorarioVariable, TurmaVariable>(variable));
+//			addConstraint(new AllowVaccinatedConstraint<HorarioVariable, TurmaVariable>(variable));
+//			addConstraint(new OfficeHourConstraint<HorarioVariable, TurmaVariable>(variable, startTime, endTime));
 		}
 //
 //		for(StaffMember p1 : people) {
 //			for(StaffMember p2 : p1.getDependencies()) {
-//				addConstraint(new DependentMembersConstraint<TimeBox, WorkingGroup>(variables, p1, p2));	
+//				addConstraint(new DependentMembersConstraint<HorarioVariable, TurmaVariable>(variables, p1, p2));	
 //			}
 //		}
-//		addConstraint(new WorkLoadConstraint<TimeBox, WorkingGroup>(variables, people));
+//		addConstraint(new WorkLoadConstraint<HorarioVariable, TurmaVariable>(variables, people));
 
 		/*
 		 * Alice 2 1 2 3 4 5 true/false (0/1) Bob 2 1 2 3 4 5 true/false (0/1) ... Alice
