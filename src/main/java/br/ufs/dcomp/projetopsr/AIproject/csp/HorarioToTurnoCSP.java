@@ -11,7 +11,7 @@ import org.paukov.combinatorics3.Generator;
 
 import aima.core.search.csp.CSP;
 import aima.core.search.csp.Domain;
-import br.ufs.dcomp.projetopsr.AIproject.constraints.turmadoc.AulasParalelasConstraint;
+import br.ufs.dcomp.projetopsr.AIproject.constraints.turmadoc.AulasConsecutivasConstraint;
 import br.ufs.dcomp.projetopsr.AIproject.variables.HorarioVariable;
 import br.ufs.dcomp.projetopsr.AIproject.variables.TurmaVariable;
 import br.ufs.dcomp.projetopsr.domain.Turno;
@@ -78,8 +78,8 @@ public class HorarioToTurnoCSP extends CSP<TurmaVariable, List<HorarioVariable>>
         }
         
         for(TurmaVariable t : getVariables()) {
-//        	addConstraint(new AulasConsecutivasConstraint<TurmaVariable, List<HorarioVariable>>(t));
-        	addConstraint(new AulasParalelasConstraint<TurmaVariable, List<HorarioVariable>>(t));
+        	addConstraint(new AulasConsecutivasConstraint<TurmaVariable, List<HorarioVariable>>(t));
+//        	addConstraint(new AulasParalelasConstraint<TurmaVariable, List<HorarioVariable>>(t));
 //        	addConstraint(new ExatamenteMetadeDaCargaConstraint<TurmaVariable, List<HorarioVariable>>(t));
         }
     }  
